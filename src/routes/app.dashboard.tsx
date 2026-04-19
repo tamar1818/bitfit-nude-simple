@@ -140,7 +140,10 @@ function DashboardPage() {
   const stepsPct = Math.min(((log?.steps ?? 0) / stepsGoal) * 100, 100);
 
   const quickAdd = (type: MealType) => {
-    navigate({ to: "/app/scanner", search: { meal: type } as never });
+    if (typeof window !== "undefined") {
+      window.sessionStorage.setItem("bitfit.preselect_meal", type);
+    }
+    navigate({ to: "/app/scanner" });
   };
 
   return (
