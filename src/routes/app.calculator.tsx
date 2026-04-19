@@ -275,7 +275,7 @@ function CalculatorPage() {
             type="button"
             onClick={applyGoal}
             disabled={applying}
-            className="flex w-full items-center justify-center gap-2 rounded-full bg-lime py-4 font-display text-base font-bold text-ink shadow-soft transition-transform active:scale-[0.98] disabled:opacity-60"
+            className="btn-cta flex w-full items-center justify-center gap-2 rounded-full bg-lime py-4 text-ink shadow-soft transition-transform active:scale-[0.98] disabled:opacity-60"
           >
             <Check className="h-5 w-5" />
             {t("applyGoal")}
