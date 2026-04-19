@@ -187,6 +187,7 @@ export type Database = {
           is_coach: boolean
           language: Database["public"]["Enums"]["user_lang"]
           onboarded: boolean
+          theme: string
           updated_at: string
         }
         Insert: {
@@ -203,6 +204,7 @@ export type Database = {
           is_coach?: boolean
           language?: Database["public"]["Enums"]["user_lang"]
           onboarded?: boolean
+          theme?: string
           updated_at?: string
         }
         Update: {
@@ -219,6 +221,7 @@ export type Database = {
           is_coach?: boolean
           language?: Database["public"]["Enums"]["user_lang"]
           onboarded?: boolean
+          theme?: string
           updated_at?: string
         }
         Relationships: []
@@ -240,6 +243,30 @@ export type Database = {
           created_at?: string
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      weight_points: {
+        Row: {
+          awarded_at: string
+          id: string
+          points: number
+          reason: string
+          user_id: string
+        }
+        Insert: {
+          awarded_at?: string
+          id?: string
+          points?: number
+          reason: string
+          user_id: string
+        }
+        Update: {
+          awarded_at?: string
+          id?: string
+          points?: number
+          reason?: string
           user_id?: string
         }
         Relationships: []
