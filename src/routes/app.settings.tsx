@@ -93,17 +93,6 @@ function SettingsPage() {
       </div>
 
       <div className="mt-6 space-y-2">
-        <Link
-          to="/app/calculator"
-          className="flex items-center gap-3 rounded-2xl bg-card p-4 shadow-soft"
-        >
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-peach">
-            <Calculator className="h-5 w-5 text-ink" />
-          </div>
-          <span className="flex-1 font-medium text-ink">{t("calculator")}</span>
-          <ChevronRight className="h-4 w-4 text-muted-foreground" />
-        </Link>
-
         {isCoach ? (
           <Link
             to="/coach/clients"
