@@ -269,6 +269,85 @@ function SettingsPage() {
           <span className="flex-1 font-medium text-ink">{t("logout")}</span>
         </button>
       </div>
+
+      {/* Legal */}
+      <div className="mt-6">
+        <div className="mb-2 px-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          {t("legal")}
+        </div>
+        <Link
+          to="/privacy"
+          className="flex items-center gap-3 rounded-[16px] border border-border bg-card p-4 transition-colors hover:bg-secondary"
+        >
+          <div className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-brand-soft text-primary">
+            <Shield className="h-5 w-5" />
+          </div>
+          <span className="flex-1 font-medium text-ink">{t("viewPrivacyPolicy")}</span>
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+        </Link>
+      </div>
+
+      {/* Danger zone */}
+      <div className="mt-6 mb-12">
+        <div className="mb-2 px-1 text-xs font-semibold uppercase tracking-wider text-destructive/80">
+          {t("dangerZone")}
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            setDeleteConfirm("");
+            setDeleteOpen(true);
+          }}
+          className="flex w-full items-center gap-3 rounded-[16px] border border-destructive/20 bg-card p-4 text-left transition-colors hover:bg-destructive/5"
+        >
+          <div className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-destructive/10 text-destructive">
+            <Trash2 className="h-5 w-5" />
+          </div>
+          <span className="flex-1 font-medium text-destructive">{t("deleteAccount")}</span>
+        </button>
+      </div>
+
+      <AlertDialog open={deleteOpen} onOpenChange={(o) => !deleting && setDeleteOpen(o)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t("deleteAccountTitle")}</AlertDialogTitle>
+            <AlertDialogDescription>{t("deleteAccountDesc")}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="mt-2">
+            <label className="text-xs font-medium text-muted-foreground">
+              {t("deleteAccountTypeToConfirm")} <span className="font-bold text-destructive">DELETE</span>
+            </label>
+            <input
+              type="text"
+              value={deleteConfirm}
+              onChange={(e) => setDeleteConfirm(e.target.value)}
+              autoComplete="off"
+              autoCapitalize="characters"
+              disabled={deleting}
+              className="mt-1.5 w-full rounded-[10px] border border-border bg-background px-4 py-3 text-sm outline-none focus:border-destructive"
+              placeholder="DELETE"
+            />
+          </div>
+          <AlertDialogFooter className="mt-2 flex-row justify-end gap-2 sm:gap-2">
+            <button
+              type="button"
+              disabled={deleting}
+              onClick={() => setDeleteOpen(false)}
+              className="rounded-[10px] border border-border bg-card px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-secondary disabled:opacity-50"
+            >
+              {t("cancel")}
+            </button>
+            <button
+              type="button"
+              disabled={deleting || deleteConfirm.trim().toUpperCase() !== "DELETE"}
+              onClick={confirmDelete}
+              className="rounded-[10px] bg-destructive px-4 py-2.5 text-sm font-medium text-destructive-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+            >
+              {deleting ? t("loading") : t("deleteAccountConfirm")}
+            </button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
