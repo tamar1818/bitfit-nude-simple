@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      activities: {
+        Row: {
+          activity_type: Database["public"]["Enums"]["activity_type"]
+          calories_burned: number
+          created_at: string
+          date: string
+          duration_min: number
+          id: string
+          label: string | null
+          user_id: string
+        }
+        Insert: {
+          activity_type?: Database["public"]["Enums"]["activity_type"]
+          calories_burned?: number
+          created_at?: string
+          date?: string
+          duration_min?: number
+          id?: string
+          label?: string | null
+          user_id: string
+        }
+        Update: {
+          activity_type?: Database["public"]["Enums"]["activity_type"]
+          calories_burned?: number
+          created_at?: string
+          date?: string
+          duration_min?: number
+          id?: string
+          label?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       coach_invites: {
         Row: {
           coach_id: string
@@ -423,6 +456,16 @@ export type Database = {
     }
     Enums: {
       activity_level: "sedentary" | "light" | "moderate" | "active" | "extra"
+      activity_type:
+        | "walk"
+        | "run"
+        | "gym"
+        | "swim"
+        | "cycle"
+        | "yoga"
+        | "hiit"
+        | "sport"
+        | "other"
       app_role: "user" | "coach" | "admin"
       meal_type: "breakfast" | "lunch" | "dinner" | "snack"
       user_gender: "male" | "female" | "other"
@@ -556,6 +599,17 @@ export const Constants = {
   public: {
     Enums: {
       activity_level: ["sedentary", "light", "moderate", "active", "extra"],
+      activity_type: [
+        "walk",
+        "run",
+        "gym",
+        "swim",
+        "cycle",
+        "yoga",
+        "hiit",
+        "sport",
+        "other",
+      ],
       app_role: ["user", "coach", "admin"],
       meal_type: ["breakfast", "lunch", "dinner", "snack"],
       user_gender: ["male", "female", "other"],
