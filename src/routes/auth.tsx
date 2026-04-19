@@ -172,16 +172,16 @@ function AuthPage() {
           <div className="h-px flex-1 bg-border" />
         </div>
 
-        {/* OAuth below sign-in */}
+        {/* OAuth below sign-in — normal case, no btn-cta */}
         <div className="space-y-2">
           <button
             type="button"
             onClick={() => handleOAuth("google")}
             disabled={oauthLoading !== null}
-            className="flex w-full items-center justify-center gap-3 rounded-[10px] border border-border bg-card px-5 py-3.5 text-sm font-medium text-ink transition-colors hover:border-ink/30 disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-3 rounded-[10px] border border-border bg-card px-5 py-3.5 text-sm font-medium text-ink transition-colors hover:border-ink/30 hover:bg-secondary disabled:opacity-50"
           >
             <GoogleIcon />
-            <span className="btn-cta text-xs">{t("continueWithGoogle")}</span>
+            <span>{t("continueWithGoogle")}</span>
           </button>
           <button
             type="button"
@@ -190,7 +190,7 @@ function AuthPage() {
             className="flex w-full items-center justify-center gap-3 rounded-[10px] border border-border bg-ink px-5 py-3.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
           >
             <AppleIcon />
-            <span className="btn-cta text-xs">{t("continueWithApple")}</span>
+            <span>{t("continueWithApple")}</span>
           </button>
         </div>
 

@@ -35,10 +35,10 @@ export function LanguageToggle({ className, variant = "compact" }: LanguageToggl
         aria-label="Language"
       >
         <span className="flex items-center gap-2">
-          <span className="overflow-hidden rounded-full ring-1 ring-border">
-            <CurrentFlag className="h-4 w-6" />
+          <span className="flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
+            <CurrentFlag className="h-full w-full object-cover" />
           </span>
-          <span>{current.label}</span>
+          <span className="normal-case">{current.label}</span>
         </span>
         <ChevronDown className="h-4 w-4 text-muted-foreground" />
       </DropdownMenuTrigger>
@@ -54,10 +54,10 @@ export function LanguageToggle({ className, variant = "compact" }: LanguageToggl
                 active && "bg-brand-soft text-primary",
               )}
             >
-              <span className="overflow-hidden rounded-full ring-1 ring-border">
-                <Flag className="h-4 w-6" />
+              <span className="flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
+                <Flag className="h-full w-full object-cover" />
               </span>
-              <span className="flex-1">{label}</span>
+              <span className="flex-1 normal-case">{label}</span>
               {active && <Check className="h-4 w-4" />}
             </DropdownMenuItem>
           );

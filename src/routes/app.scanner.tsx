@@ -114,7 +114,7 @@ function ScannerPage() {
         <button
           type="button"
           onClick={() => setAiOpen(true)}
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-lime text-ink"
+          className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-[color:var(--info-soft)] text-[color:var(--info)] transition-transform hover:scale-110 active:scale-95"
           aria-label="AI scan"
         >
           <Camera className="h-4 w-4" />
