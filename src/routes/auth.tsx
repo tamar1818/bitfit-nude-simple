@@ -35,9 +35,15 @@ function AuthPage() {
   const [fullName, setFullName] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [oauthLoading, setOauthLoading] = useState<"google" | "apple" | null>(null);
+  const [acceptedPolicy, setAcceptedPolicy] = useState(false);
+  const [policyOpen, setPolicyOpen] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (mode === "signup" && !acceptedPolicy) {
+      toast.error(t("mustAcceptPolicy"));
+      return;
+    }
     setSubmitting(true);
     try {
       const parsed = schema.parse({
