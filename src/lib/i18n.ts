@@ -1,0 +1,190 @@
+import { createContext, useContext } from "react";
+
+export type Lang = "ka" | "en";
+
+export const translations = {
+  ka: {
+    appName: "Bitfit",
+    tagline: "შენი მარტივი ფიტნეს გზამკვლევი",
+    // Auth
+    signIn: "შესვლა",
+    signUp: "რეგისტრაცია",
+    email: "ელფოსტა",
+    password: "პაროლი",
+    fullName: "სახელი და გვარი",
+    haveAccount: "უკვე გაქვს ანგარიში?",
+    noAccount: "არ გაქვს ანგარიში?",
+    continue: "გაგრძელება",
+    // Onboarding
+    yourGoal: "შენი მიზანი",
+    loseWeight: "წონის დაკლება",
+    gainWeight: "წონის მომატება",
+    maintainWeight: "წონის შენარჩუნება",
+    aboutYou: "შენ შესახებ",
+    age: "ასაკი",
+    gender: "სქესი",
+    male: "მამრობითი",
+    female: "მდედრობითი",
+    other: "სხვა",
+    bodyMetrics: "სხეულის მონაცემები",
+    height: "სიმაღლე (სმ)",
+    currentWeight: "ამჟამინდელი წონა (კგ)",
+    targetWeight: "სასურველი წონა (კგ)",
+    coachInvite: "მწვრთნელის კოდი (არასავალდებულო)",
+    inviteCode: "კოდი",
+    skip: "გამოტოვება",
+    finish: "დასრულება",
+    next: "შემდეგი",
+    back: "უკან",
+    // Dashboard
+    today: "დღეს",
+    calories: "კალორია",
+    eaten: "მიღებული",
+    burned: "დაწვა",
+    remaining: "დარჩენილი",
+    water: "წყალი",
+    steps: "ნაბიჯი",
+    meals: "კერძები",
+    addMeal: "კერძის დამატება",
+    breakfast: "საუზმე",
+    lunch: "სადილი",
+    dinner: "ვახშამი",
+    snack: "სნეკი",
+    protein: "ცილა",
+    carbs: "ნახშირწყალი",
+    fats: "ცხიმი",
+    // Scanner
+    searchFood: "მოძებნე საკვები",
+    scanFood: "სკანერი",
+    aiScannerSoon: "AI სკანერი მალე",
+    aiScannerDesc: "მალე გექნება ფოტოს გადაღებით კალორიების ამოცნობა",
+    // Progress
+    progress: "პროგრესი",
+    weightHistory: "წონის ისტორია",
+    addWeight: "წონის დამატება",
+    // Settings
+    settings: "პარამეტრები",
+    profile: "პროფილი",
+    language: "ენა",
+    georgian: "ქართული",
+    english: "English",
+    logout: "გასვლა",
+    // Coach
+    coach: "მწვრთნელი",
+    clients: "კლიენტები",
+    createInvite: "კოდის შექმნა",
+    becomeCoach: "გახდი მწვრთნელი",
+    noClients: "ჯერ კლიენტი არ გყავს",
+    // Common
+    loading: "იტვირთება...",
+    save: "შენახვა",
+    cancel: "გაუქმება",
+    delete: "წაშლა",
+    add: "დამატება",
+    glass: "ჭიქა",
+    goal: "მიზანი",
+    of: "/",
+    welcome: "გამარჯობა",
+  },
+  en: {
+    appName: "Bitfit",
+    tagline: "Your simple fitness companion",
+    signIn: "Sign in",
+    signUp: "Sign up",
+    email: "Email",
+    password: "Password",
+    fullName: "Full name",
+    haveAccount: "Already have an account?",
+    noAccount: "Don't have an account?",
+    continue: "Continue",
+    yourGoal: "Your goal",
+    loseWeight: "Lose weight",
+    gainWeight: "Gain weight",
+    maintainWeight: "Maintain weight",
+    aboutYou: "About you",
+    age: "Age",
+    gender: "Gender",
+    male: "Male",
+    female: "Female",
+    other: "Other",
+    bodyMetrics: "Body metrics",
+    height: "Height (cm)",
+    currentWeight: "Current weight (kg)",
+    targetWeight: "Target weight (kg)",
+    coachInvite: "Coach invite code (optional)",
+    inviteCode: "Code",
+    skip: "Skip",
+    finish: "Finish",
+    next: "Next",
+    back: "Back",
+    today: "Today",
+    calories: "kcal",
+    eaten: "Eaten",
+    burned: "Burned",
+    remaining: "Remaining",
+    water: "Water",
+    steps: "Steps",
+    meals: "Meals",
+    addMeal: "Add meal",
+    breakfast: "Breakfast",
+    lunch: "Lunch",
+    dinner: "Dinner",
+    snack: "Snack",
+    protein: "Protein",
+    carbs: "Carbs",
+    fats: "Fats",
+    searchFood: "Search food",
+    scanFood: "Scan",
+    aiScannerSoon: "AI Scanner coming soon",
+    aiScannerDesc: "Soon you'll snap a photo and get instant calorie detection",
+    progress: "Progress",
+    weightHistory: "Weight history",
+    addWeight: "Add weight",
+    settings: "Settings",
+    profile: "Profile",
+    language: "Language",
+    georgian: "ქართული",
+    english: "English",
+    logout: "Log out",
+    coach: "Coach",
+    clients: "Clients",
+    createInvite: "Create invite",
+    becomeCoach: "Become a coach",
+    noClients: "No clients yet",
+    loading: "Loading...",
+    save: "Save",
+    cancel: "Cancel",
+    delete: "Delete",
+    add: "Add",
+    glass: "glass",
+    goal: "Goal",
+    of: "/",
+    welcome: "Hi",
+  },
+} as const;
+
+export type TranslationKey = keyof (typeof translations)["ka"];
+
+interface I18nContextValue {
+  lang: Lang;
+  setLang: (lang: Lang) => void;
+  t: (key: TranslationKey) => string;
+}
+
+export const I18nContext = createContext<I18nContextValue | null>(null);
+
+export function useI18n(): I18nContextValue {
+  const ctx = useContext(I18nContext);
+  if (!ctx) throw new Error("useI18n must be used within I18nProvider");
+  return ctx;
+}
+
+export function useT(): I18nContextValue["t"] {
+  return useI18n().t;
+}
+
+export function getStoredLang(): Lang {
+  if (typeof window === "undefined") return "ka";
+  const stored = window.localStorage.getItem("bitfit.lang");
+  return stored === "en" || stored === "ka" ? stored : "ka";
+}
