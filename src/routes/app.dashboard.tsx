@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
 import { Footprints, Trash2, Plus, Coffee, UtensilsCrossed, Soup, Apple } from "lucide-react";
@@ -6,12 +6,12 @@ import { useAuth } from "@/providers/auth-provider";
 import { useT } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import { CalorieRing } from "@/components/bitfit/calorie-ring";
-import { StatCard } from "@/components/bitfit/stat-card";
 import { WaterTracker } from "@/components/bitfit/water-tracker";
 import { MacroBars } from "@/components/bitfit/macro-bars";
 import { Logo } from "@/components/bitfit/logo";
 import { MealAvatar } from "@/components/bitfit/meal-emoji";
 import { MealSuggestions } from "@/components/bitfit/meal-suggestions";
+import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/app/dashboard")({
@@ -46,6 +46,7 @@ const MEAL_ICON: Record<MealType, React.ReactNode> = {
 function DashboardPage() {
   const { user } = useAuth();
   const t = useT();
+  const navigate = useNavigate();
   const today = format(new Date(), "yyyy-MM-dd");
   const [log, setLog] = useState<DailyLog | null>(null);
   const [meals, setMeals] = useState<Meal[]>([]);
@@ -136,9 +137,15 @@ function DashboardPage() {
   const goal = log?.calories_goal ?? 2000;
   const remaining = Math.max(goal - totals.cal, 0);
   const stepsGoal = 10000;
+  const stepsPct = Math.min(((log?.steps ?? 0) / stepsGoal) * 100, 100);
+
+  const quickAdd = (type: MealType) => {
+    navigate({ to: "/app/scanner", search: { meal: type } as never });
+  };
 
   return (
-    <div className="mx-auto max-w-md px-5 pt-8">
+    <div className="mx-auto max-w-md px-5 pt-8 pb-32">
+      {/* 1. Header / Profile */}
       <header className="bf-bounce-in flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Logo size={36} />
@@ -166,7 +173,7 @@ function DashboardPage() {
         </Link>
       </header>
 
-      {/* Hero ring */}
+      {/* 2. Hero ring */}
       <div className="bf-bounce-in mt-6 rounded-[16px] border border-border bg-card p-6" style={{ animationDelay: "60ms" }}>
         <div className="flex flex-col items-center">
           <CalorieRing eaten={totals.cal} goal={goal} />
@@ -186,57 +193,47 @@ function DashboardPage() {
         </div>
       </div>
 
-      {/* AI suggestions */}
-      <div className="bf-bounce-in mt-4" style={{ animationDelay: "120ms" }}>
-        <MealSuggestions remainingCalories={remaining} goal={goalKind} onLogged={loadAll} />
-      </div>
-
-      {/* Water + steps */}
-      <div className="mt-4 grid grid-cols-1 gap-4">
-        {log && <WaterTracker ml={log.water_ml} onChange={updateWater} />}
-        <StatCard
-          tint="mint"
-          icon={<Footprints className="h-4 w-4" />}
-          label={t("steps")}
-          value={`${log?.steps ?? 0}`}
-          hint={`${t("of")} ${stepsGoal.toLocaleString()}`}
-        >
-          <div className="mt-2 h-2 overflow-hidden rounded-full bg-background/40">
-            <div
-              className="h-full bg-ink transition-all duration-500"
-              style={{ width: `${Math.min(((log?.steps ?? 0) / stepsGoal) * 100, 100)}%` }}
-            />
-          </div>
-          <div className="mt-3 flex gap-2">
-            <input
-              type="number"
-              value={stepsInput}
-              onChange={(e) => setStepsInput(e.target.value)}
-              placeholder="0"
-              className="flex-1 rounded-full bg-background/60 px-4 py-2 text-sm outline-none"
-            />
-            <button
-              type="button"
-              onClick={updateSteps}
-              className="rounded-full bg-ink px-4 text-sm font-medium text-primary-foreground"
-            >
-              {t("save")}
-            </button>
-          </div>
-        </StatCard>
-      </div>
-
-      {/* Meals grouped */}
-      <div className="mt-6 pb-4">
+      {/* 3. MEALS — second position with quick-add */}
+      <section className="bf-bounce-in mt-6" style={{ animationDelay: "100ms" }}>
         <div className="flex items-center justify-between">
           <h2 className="font-display text-lg font-bold text-ink">{t("meals")}</h2>
           <Link
             to="/app/scanner"
-            className="flex items-center gap-1.5 rounded-[10px] bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+            className="flex items-center gap-1.5 rounded-[10px] bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground transition-transform hover:scale-105 active:scale-95"
           >
             <Plus className="h-3.5 w-3.5" />
             <span className="btn-cta">{t("addMeal")}</span>
           </Link>
+        </div>
+
+        {/* Quick-add buttons: breakfast / lunch / dinner / + */}
+        <div className="mt-3 grid grid-cols-4 gap-2">
+          {(["breakfast", "lunch", "dinner"] as MealType[]).map((type) => (
+            <button
+              key={type}
+              type="button"
+              onClick={() => quickAdd(type)}
+              className="group flex flex-col items-center gap-1.5 rounded-[12px] border border-border bg-card p-3 transition-all hover:border-primary hover:bg-brand-soft active:scale-95"
+            >
+              <span className="flex h-8 w-8 items-center justify-center rounded-[8px] bg-brand-soft text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                {MEAL_ICON[type]}
+              </span>
+              <span className="text-[10px] font-semibold uppercase tracking-wide text-ink">
+                {t(type)}
+              </span>
+            </button>
+          ))}
+          <button
+            type="button"
+            onClick={() => quickAdd("snack")}
+            className="flex flex-col items-center justify-center gap-1.5 rounded-[12px] border-2 border-dashed border-primary/40 bg-brand-soft p-3 text-primary transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground active:scale-95"
+            aria-label={t("addMeal")}
+          >
+            <Plus className="h-5 w-5" />
+            <span className="text-[10px] font-semibold uppercase tracking-wide">
+              {t("snack")}
+            </span>
+          </button>
         </div>
 
         {meals.length === 0 ? (
@@ -258,7 +255,7 @@ function DashboardPage() {
                       </span>
                       <span className="font-display text-sm font-semibold">{t(type)}</span>
                     </div>
-                    <span className="text-xs font-semibold text-muted-foreground">
+                    <span className="text-xs font-semibold text-primary">
                       {Math.round(sectionCal)} {t("calories")}
                     </span>
                   </div>
@@ -291,6 +288,56 @@ function DashboardPage() {
             })}
           </div>
         )}
+      </section>
+
+      {/* 4. AI suggestions */}
+      <div className="bf-bounce-in mt-6" style={{ animationDelay: "140ms" }}>
+        <MealSuggestions remainingCalories={remaining} goal={goalKind} onLogged={loadAll} />
+      </div>
+
+      {/* 5. Compact water + steps row */}
+      <div className="mt-6 grid grid-cols-2 gap-3">
+        {log && <WaterTracker ml={log.water_ml} onChange={updateWater} />}
+        <div className="rounded-[16px] border border-border bg-card p-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="flex h-7 w-7 items-center justify-center rounded-[8px] bg-brand-soft text-primary">
+                <Footprints className="h-3.5 w-3.5" />
+              </div>
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                {t("steps")}
+              </span>
+            </div>
+            <span className="text-[11px] font-medium text-muted-foreground">
+              {Math.round(stepsPct)}%
+            </span>
+          </div>
+          <div className="mt-2 font-display text-base font-bold text-ink">
+            {(log?.steps ?? 0).toLocaleString()}
+          </div>
+          <div className="mt-1 h-2 overflow-hidden rounded-full bg-secondary">
+            <div
+              className={cn("h-full bg-primary transition-all duration-500")}
+              style={{ width: `${stepsPct}%` }}
+            />
+          </div>
+          <div className="mt-2 flex gap-1.5">
+            <input
+              type="number"
+              value={stepsInput}
+              onChange={(e) => setStepsInput(e.target.value)}
+              placeholder="0"
+              className="w-full min-w-0 rounded-[8px] bg-secondary px-2 py-1.5 text-xs outline-none focus:ring-2 focus:ring-primary"
+            />
+            <button
+              type="button"
+              onClick={updateSteps}
+              className="rounded-[8px] bg-primary px-3 text-xs font-semibold text-primary-foreground hover:opacity-90"
+            >
+              {t("save")}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
