@@ -200,7 +200,7 @@ function AuthPage() {
 
           <button
             type="submit"
-            disabled={submitting}
+            disabled={submitting || (mode === "signup" && !acceptedPolicy)}
             className="btn-cta mt-4 w-full rounded-[10px] bg-primary py-4 text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
           >
             {submitting ? t("loading") : mode === "signup" ? t("signUp") : t("signIn")}
