@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { Heart } from "lucide-react";
+import { Logo } from "@/components/bitfit/logo";
 
 /**
- * Bitfit launch splash — shown once per session.
- * Animated heartbeat + pulse rings convey "fitness / wellbeing".
+ * Bitfit launch splash — flame logo with pulse rings, shown once per session.
  */
 export function Splash() {
   const [show, setShow] = useState(true);
@@ -15,7 +14,7 @@ export function Splash() {
       return;
     }
     window.sessionStorage.setItem("bitfit.splashShown", "1");
-    const t = window.setTimeout(() => setShow(false), 2000);
+    const t = window.setTimeout(() => setShow(false), 2200);
     return () => window.clearTimeout(t);
   }, []);
 
@@ -23,20 +22,20 @@ export function Splash() {
 
   return (
     <div className="bf-splash-out fixed inset-0 z-[200] flex flex-col items-center justify-center bg-background">
-      <div className="relative flex h-28 w-28 items-center justify-center">
-        <span className="absolute inset-0 rounded-full bg-lime/40 bf-pulse-ring" />
+      <div className="relative flex h-32 w-32 items-center justify-center">
+        <span className="absolute inset-0 rounded-[28px] bg-primary/30 bf-pulse-ring" />
         <span
-          className="absolute inset-0 rounded-full bg-lime/30 bf-pulse-ring"
-          style={{ animationDelay: "0.4s" }}
+          className="absolute inset-0 rounded-[28px] bg-primary/20 bf-pulse-ring"
+          style={{ animationDelay: "0.5s" }}
         />
-        <div className="bf-pop relative flex h-20 w-20 items-center justify-center rounded-full bg-ink shadow-float">
-          <Heart className="bf-heartbeat h-9 w-9 fill-lime text-lime" />
+        <div className="bf-pop relative">
+          <Logo size={96} animated />
         </div>
       </div>
       <div className="bf-rise mt-6 text-center">
-        <div className="font-display text-3xl font-bold tracking-tight text-ink">Bitfit</div>
-        <div className="mt-1 text-xs uppercase tracking-[0.3em] text-muted-foreground">
-          Fit · Calm · You
+        <div className="font-display text-3xl font-bold tracking-tight text-ink">bitfit</div>
+        <div className="mt-1 text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
+          Track every bit
         </div>
       </div>
     </div>
