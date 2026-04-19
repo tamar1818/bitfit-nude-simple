@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
-import { Footprints, Trash2, Plus, UserCircle2, Coffee, UtensilsCrossed, Soup, Apple } from "lucide-react";
+import { Footprints, Trash2, Plus, Coffee, UtensilsCrossed, Soup, Apple } from "lucide-react";
 import { useAuth } from "@/providers/auth-provider";
 import { useT } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,6 +10,8 @@ import { StatCard } from "@/components/bitfit/stat-card";
 import { WaterTracker } from "@/components/bitfit/water-tracker";
 import { MacroBars } from "@/components/bitfit/macro-bars";
 import { Logo } from "@/components/bitfit/logo";
+import { MealAvatar } from "@/components/bitfit/meal-emoji";
+import { MealSuggestions } from "@/components/bitfit/meal-suggestions";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/app/dashboard")({
@@ -26,7 +28,6 @@ interface Meal {
   carbs_g: number;
   fats_g: number;
 }
-
 interface DailyLog {
   id: string;
   water_ml: number;
@@ -49,41 +50,51 @@ function DashboardPage() {
   const [log, setLog] = useState<DailyLog | null>(null);
   const [meals, setMeals] = useState<Meal[]>([]);
   const [profileName, setProfileName] = useState<string>("");
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [goalKind, setGoalKind] = useState<"lose" | "gain" | "maintain" | null>(null);
   const [stepsInput, setStepsInput] = useState("");
 
-  useEffect(() => {
+  const loadAll = async () => {
     if (!user) return;
-    const load = async () => {
-      const [{ data: existing }, { data: m }, { data: p }] = await Promise.all([
-        supabase
-          .from("daily_logs")
-          .select("id, water_ml, steps, calories_goal")
-          .eq("user_id", user.id)
-          .eq("date", today)
-          .maybeSingle(),
-        supabase
-          .from("meals")
-          .select("id, food_name, meal_type, calories, protein_g, carbs_g, fats_g")
-          .eq("user_id", user.id)
-          .eq("date", today)
-          .order("created_at", { ascending: false }),
-        supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle(),
-      ]);
+    const [{ data: existing }, { data: m }, { data: p }] = await Promise.all([
+      supabase
+        .from("daily_logs")
+        .select("id, water_ml, steps, calories_goal")
+        .eq("user_id", user.id)
+        .eq("date", today)
+        .maybeSingle(),
+      supabase
+        .from("meals")
+        .select("id, food_name, meal_type, calories, protein_g, carbs_g, fats_g")
+        .eq("user_id", user.id)
+        .eq("date", today)
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("profiles")
+        .select("full_name, avatar_url, goal")
+        .eq("id", user.id)
+        .maybeSingle(),
+    ]);
 
-      let current = existing;
-      if (!current) {
-        const { data: created } = await supabase
-          .from("daily_logs")
-          .insert({ user_id: user.id, date: today })
-          .select("id, water_ml, steps, calories_goal")
-          .single();
-        current = created ?? null;
-      }
-      setLog(current);
-      setMeals((m as Meal[]) ?? []);
-      setProfileName(p?.full_name ?? "");
-    };
-    load().catch((e) => toast.error(e.message));
+    let current = existing;
+    if (!current) {
+      const { data: created } = await supabase
+        .from("daily_logs")
+        .insert({ user_id: user.id, date: today })
+        .select("id, water_ml, steps, calories_goal")
+        .single();
+      current = created ?? null;
+    }
+    setLog(current);
+    setMeals((m as Meal[]) ?? []);
+    setProfileName(p?.full_name ?? "");
+    setAvatarUrl(p?.avatar_url ?? null);
+    setGoalKind((p?.goal as "lose" | "gain" | "maintain" | null) ?? null);
+  };
+
+  useEffect(() => {
+    loadAll().catch((e) => toast.error(e.message));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, today]);
 
   const updateWater = async (next: number) => {
@@ -123,11 +134,12 @@ function DashboardPage() {
   }, [meals]);
 
   const goal = log?.calories_goal ?? 2000;
+  const remaining = Math.max(goal - totals.cal, 0);
   const stepsGoal = 10000;
 
   return (
     <div className="mx-auto max-w-md px-5 pt-8">
-      <header className="flex items-center justify-between">
+      <header className="bf-bounce-in flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Logo size={36} />
           <div>
@@ -141,15 +153,21 @@ function DashboardPage() {
         </div>
         <Link
           to="/app/settings"
-          className="flex h-11 w-11 items-center justify-center rounded-[10px] border border-border bg-card"
+          className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-[10px] border border-border bg-card transition-transform hover:scale-105"
           aria-label={t("settings")}
         >
-          <UserCircle2 className="h-5 w-5 text-ink" />
+          {avatarUrl ? (
+            <img src={avatarUrl} alt="" className="h-full w-full object-cover" />
+          ) : (
+            <span className="font-display text-sm font-bold text-primary">
+              {profileName?.[0]?.toUpperCase() ?? "B"}
+            </span>
+          )}
         </Link>
       </header>
 
-      {/* Hero ring card */}
-      <div className="mt-6 rounded-[16px] border border-border bg-card p-6">
+      {/* Hero ring */}
+      <div className="bf-bounce-in mt-6 rounded-[16px] border border-border bg-card p-6" style={{ animationDelay: "60ms" }}>
         <div className="flex flex-col items-center">
           <CalorieRing eaten={totals.cal} goal={goal} />
           <div className="mt-4 grid w-full grid-cols-2 gap-3 text-center">
@@ -166,6 +184,11 @@ function DashboardPage() {
             <MacroBars protein={totals.p} carbs={totals.c} fats={totals.f} />
           </div>
         </div>
+      </div>
+
+      {/* AI suggestions */}
+      <div className="bf-bounce-in mt-4" style={{ animationDelay: "120ms" }}>
+        <MealSuggestions remainingCalories={remaining} goal={goalKind} onLogged={loadAll} />
       </div>
 
       {/* Water + steps */}
@@ -203,8 +226,8 @@ function DashboardPage() {
         </StatCard>
       </div>
 
-      {/* Meals grouped by type */}
-      <div className="mt-6">
+      {/* Meals grouped */}
+      <div className="mt-6 pb-4">
         <div className="flex items-center justify-between">
           <h2 className="font-display text-lg font-bold text-ink">{t("meals")}</h2>
           <Link
@@ -243,8 +266,9 @@ function DashboardPage() {
                     {list.map((m) => (
                       <div
                         key={m.id}
-                        className="flex items-center gap-3 rounded-[10px] px-3 py-2 transition-colors hover:bg-secondary"
+                        className="flex items-center gap-3 rounded-[10px] px-2 py-2 transition-colors hover:bg-secondary"
                       >
+                        <MealAvatar name={m.food_name} size={40} />
                         <div className="flex-1 min-w-0">
                           <div className="truncate text-sm font-medium text-ink">{m.food_name}</div>
                           <div className="text-[11px] text-muted-foreground">
