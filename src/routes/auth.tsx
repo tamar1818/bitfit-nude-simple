@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { useT } from "@/lib/i18n";
 import { LanguageToggle } from "@/components/bitfit/language-toggle";
+import { Logo } from "@/components/bitfit/logo";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth")({
@@ -88,7 +89,7 @@ function AuthPage() {
     <div className="min-h-screen bg-background px-5 pb-10 pt-8">
       <div className="mx-auto flex max-w-md flex-col">
         <div className="flex items-center justify-between">
-          <div className="font-display text-2xl font-bold text-ink">Bitfit</div>
+          <Logo size={36} showWordmark />
           <LanguageToggle />
         </div>
 
@@ -115,7 +116,7 @@ function AuthPage() {
             type="button"
             onClick={() => handleOAuth("google")}
             disabled={oauthLoading !== null}
-            className="flex w-full items-center justify-center gap-3 rounded-full bg-card px-5 py-3.5 text-sm font-medium text-ink shadow-soft transition-opacity hover:opacity-90 disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-3 rounded-[10px] border border-border bg-card px-5 py-3.5 text-sm font-medium text-ink transition-colors hover:border-ink/30 disabled:opacity-50"
           >
             <GoogleIcon />
             <span className="btn-cta text-xs">{t("continueWithGoogle")}</span>
@@ -124,7 +125,7 @@ function AuthPage() {
             type="button"
             onClick={() => handleOAuth("apple")}
             disabled={oauthLoading !== null}
-            className="flex w-full items-center justify-center gap-3 rounded-full bg-ink px-5 py-3.5 text-sm font-medium text-primary-foreground shadow-soft transition-opacity hover:opacity-90 disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-3 rounded-[10px] border border-border bg-ink px-5 py-3.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
           >
             <AppleIcon />
             <span className="btn-cta text-xs">{t("continueWithApple")}</span>
@@ -146,7 +147,7 @@ function AuthPage() {
               placeholder={t("fullName")}
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="w-full rounded-2xl bg-card px-5 py-4 text-base shadow-soft outline-none focus:ring-2 focus:ring-ink/20"
+              className="w-full rounded-[10px] border border-border bg-card px-5 py-4 text-base outline-none transition-colors focus:border-primary"
               required
               maxLength={100}
             />
@@ -156,7 +157,7 @@ function AuthPage() {
             placeholder={t("email")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-2xl bg-card px-5 py-4 text-base shadow-soft outline-none focus:ring-2 focus:ring-ink/20"
+            className="w-full rounded-[10px] border border-border bg-card px-5 py-4 text-base outline-none transition-colors focus:border-primary"
             required
             maxLength={255}
           />
@@ -165,7 +166,7 @@ function AuthPage() {
             placeholder={t("password")}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-2xl bg-card px-5 py-4 text-base shadow-soft outline-none focus:ring-2 focus:ring-ink/20"
+            className="w-full rounded-[10px] border border-border bg-card px-5 py-4 text-base outline-none transition-colors focus:border-primary"
             required
             minLength={6}
             maxLength={72}
@@ -185,7 +186,7 @@ function AuthPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="btn-cta mt-4 w-full rounded-full bg-ink py-4 text-primary-foreground shadow-card transition-opacity hover:opacity-90 disabled:opacity-50"
+            className="btn-cta mt-4 w-full rounded-[10px] bg-primary py-4 text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
           >
             {submitting ? t("loading") : mode === "signup" ? t("signUp") : t("signIn")}
           </button>

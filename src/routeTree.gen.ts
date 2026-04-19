@@ -21,7 +21,6 @@ import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppScannerRouteImport } from './routes/app.scanner'
 import { Route as AppProgressRouteImport } from './routes/app.progress'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
-import { Route as AppCalculatorRouteImport } from './routes/app.calculator'
 import { Route as CoachClientsIdRouteImport } from './routes/coach.clients.$id'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
@@ -84,11 +83,6 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
-const AppCalculatorRoute = AppCalculatorRouteImport.update({
-  id: '/calculator',
-  path: '/calculator',
-  getParentRoute: () => AppRoute,
-} as any)
 const CoachClientsIdRoute = CoachClientsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -103,7 +97,6 @@ export interface FileRoutesByFullPath {
   '/forgot-password': typeof ForgotPasswordRoute
   '/onboarding': typeof OnboardingRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/app/calculator': typeof AppCalculatorRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/progress': typeof AppProgressRoute
   '/app/scanner': typeof AppScannerRoute
@@ -119,7 +112,6 @@ export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
   '/onboarding': typeof OnboardingRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/app/calculator': typeof AppCalculatorRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/progress': typeof AppProgressRoute
   '/app/scanner': typeof AppScannerRoute
@@ -136,7 +128,6 @@ export interface FileRoutesById {
   '/forgot-password': typeof ForgotPasswordRoute
   '/onboarding': typeof OnboardingRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/app/calculator': typeof AppCalculatorRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/progress': typeof AppProgressRoute
   '/app/scanner': typeof AppScannerRoute
@@ -154,7 +145,6 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/onboarding'
     | '/reset-password'
-    | '/app/calculator'
     | '/app/dashboard'
     | '/app/progress'
     | '/app/scanner'
@@ -170,7 +160,6 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/onboarding'
     | '/reset-password'
-    | '/app/calculator'
     | '/app/dashboard'
     | '/app/progress'
     | '/app/scanner'
@@ -186,7 +175,6 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/onboarding'
     | '/reset-password'
-    | '/app/calculator'
     | '/app/dashboard'
     | '/app/progress'
     | '/app/scanner'
@@ -291,13 +279,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
-    '/app/calculator': {
-      id: '/app/calculator'
-      path: '/calculator'
-      fullPath: '/app/calculator'
-      preLoaderRoute: typeof AppCalculatorRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/coach/clients/$id': {
       id: '/coach/clients/$id'
       path: '/$id'
@@ -309,7 +290,6 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
-  AppCalculatorRoute: typeof AppCalculatorRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppProgressRoute: typeof AppProgressRoute
   AppScannerRoute: typeof AppScannerRoute
@@ -317,7 +297,6 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppCalculatorRoute: AppCalculatorRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppProgressRoute: AppProgressRoute,
   AppScannerRoute: AppScannerRoute,
