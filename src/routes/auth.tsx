@@ -249,6 +249,40 @@ function AuthPage() {
           </span>
         </button>
       </div>
+
+      <Dialog open={policyOpen} onOpenChange={setPolicyOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>{t("privacyTitle")}</DialogTitle>
+            <DialogDescription className="pt-2 text-sm leading-relaxed text-ink/70">
+              {t("privacyBody")}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="mt-4 flex-row justify-end gap-2 sm:gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                setAcceptedPolicy(false);
+                setPolicyOpen(false);
+                toast.error(t("policyDeclined"));
+              }}
+              className="rounded-[10px] border border-border bg-card px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-secondary"
+            >
+              {t("decline")}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setAcceptedPolicy(true);
+                setPolicyOpen(false);
+              }}
+              className="rounded-[10px] bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+            >
+              {t("accept")}
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
