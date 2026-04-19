@@ -1,5 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Home, Utensils, TrendingUp, Settings, ScanLine } from "lucide-react";
+import { Home, Utensils, Users, Settings, ScanLine } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
 
@@ -10,7 +10,7 @@ export function BottomNav() {
   const items = [
     { to: "/app/dashboard", icon: Home, label: t("today") },
     { to: "/app/scanner", icon: Utensils, label: t("meals") },
-    { to: "/app/progress", icon: TrendingUp, label: t("progress") },
+    { to: "/app/groups", icon: Users, label: t("groups") },
     { to: "/app/settings", icon: Settings, label: t("settings") },
   ] as const;
 

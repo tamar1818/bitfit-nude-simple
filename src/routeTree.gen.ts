@@ -20,7 +20,9 @@ import { Route as CoachClientsRouteImport } from './routes/coach.clients'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppScannerRouteImport } from './routes/app.scanner'
 import { Route as AppProgressRouteImport } from './routes/app.progress'
+import { Route as AppGroupsRouteImport } from './routes/app.groups'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
+import { Route as GroupsJoinSlugRouteImport } from './routes/groups.join.$slug'
 import { Route as CoachClientsIdRouteImport } from './routes/coach.clients.$id'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
@@ -78,10 +80,20 @@ const AppProgressRoute = AppProgressRouteImport.update({
   path: '/progress',
   getParentRoute: () => AppRoute,
 } as any)
+const AppGroupsRoute = AppGroupsRouteImport.update({
+  id: '/groups',
+  path: '/groups',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AppRoute,
+} as any)
+const GroupsJoinSlugRoute = GroupsJoinSlugRouteImport.update({
+  id: '/groups/join/$slug',
+  path: '/groups/join/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const CoachClientsIdRoute = CoachClientsIdRouteImport.update({
   id: '/$id',
@@ -98,11 +110,13 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof OnboardingRoute
   '/reset-password': typeof ResetPasswordRoute
   '/app/dashboard': typeof AppDashboardRoute
+  '/app/groups': typeof AppGroupsRoute
   '/app/progress': typeof AppProgressRoute
   '/app/scanner': typeof AppScannerRoute
   '/app/settings': typeof AppSettingsRoute
   '/coach/clients': typeof CoachClientsRouteWithChildren
   '/coach/clients/$id': typeof CoachClientsIdRoute
+  '/groups/join/$slug': typeof GroupsJoinSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -113,11 +127,13 @@ export interface FileRoutesByTo {
   '/onboarding': typeof OnboardingRoute
   '/reset-password': typeof ResetPasswordRoute
   '/app/dashboard': typeof AppDashboardRoute
+  '/app/groups': typeof AppGroupsRoute
   '/app/progress': typeof AppProgressRoute
   '/app/scanner': typeof AppScannerRoute
   '/app/settings': typeof AppSettingsRoute
   '/coach/clients': typeof CoachClientsRouteWithChildren
   '/coach/clients/$id': typeof CoachClientsIdRoute
+  '/groups/join/$slug': typeof GroupsJoinSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -129,11 +145,13 @@ export interface FileRoutesById {
   '/onboarding': typeof OnboardingRoute
   '/reset-password': typeof ResetPasswordRoute
   '/app/dashboard': typeof AppDashboardRoute
+  '/app/groups': typeof AppGroupsRoute
   '/app/progress': typeof AppProgressRoute
   '/app/scanner': typeof AppScannerRoute
   '/app/settings': typeof AppSettingsRoute
   '/coach/clients': typeof CoachClientsRouteWithChildren
   '/coach/clients/$id': typeof CoachClientsIdRoute
+  '/groups/join/$slug': typeof GroupsJoinSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -146,11 +164,13 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/reset-password'
     | '/app/dashboard'
+    | '/app/groups'
     | '/app/progress'
     | '/app/scanner'
     | '/app/settings'
     | '/coach/clients'
     | '/coach/clients/$id'
+    | '/groups/join/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -161,11 +181,13 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/reset-password'
     | '/app/dashboard'
+    | '/app/groups'
     | '/app/progress'
     | '/app/scanner'
     | '/app/settings'
     | '/coach/clients'
     | '/coach/clients/$id'
+    | '/groups/join/$slug'
   id:
     | '__root__'
     | '/'
@@ -176,11 +198,13 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/reset-password'
     | '/app/dashboard'
+    | '/app/groups'
     | '/app/progress'
     | '/app/scanner'
     | '/app/settings'
     | '/coach/clients'
     | '/coach/clients/$id'
+    | '/groups/join/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -191,6 +215,7 @@ export interface RootRouteChildren {
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   OnboardingRoute: typeof OnboardingRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  GroupsJoinSlugRoute: typeof GroupsJoinSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -272,12 +297,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppProgressRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/groups': {
+      id: '/app/groups'
+      path: '/groups'
+      fullPath: '/app/groups'
+      preLoaderRoute: typeof AppGroupsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/dashboard': {
       id: '/app/dashboard'
       path: '/dashboard'
       fullPath: '/app/dashboard'
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
+    }
+    '/groups/join/$slug': {
+      id: '/groups/join/$slug'
+      path: '/groups/join/$slug'
+      fullPath: '/groups/join/$slug'
+      preLoaderRoute: typeof GroupsJoinSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/coach/clients/$id': {
       id: '/coach/clients/$id'
@@ -291,6 +330,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
+  AppGroupsRoute: typeof AppGroupsRoute
   AppProgressRoute: typeof AppProgressRoute
   AppScannerRoute: typeof AppScannerRoute
   AppSettingsRoute: typeof AppSettingsRoute
@@ -298,6 +338,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
+  AppGroupsRoute: AppGroupsRoute,
   AppProgressRoute: AppProgressRoute,
   AppScannerRoute: AppScannerRoute,
   AppSettingsRoute: AppSettingsRoute,
@@ -335,6 +376,7 @@ const rootRouteChildren: RootRouteChildren = {
   ForgotPasswordRoute: ForgotPasswordRoute,
   OnboardingRoute: OnboardingRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  GroupsJoinSlugRoute: GroupsJoinSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

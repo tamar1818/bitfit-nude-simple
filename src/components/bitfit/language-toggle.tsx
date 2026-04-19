@@ -1,39 +1,68 @@
 import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { GeorgianFlag, UKFlag } from "./flag-icons";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Check, ChevronDown } from "lucide-react";
 
-export function LanguageToggle({ className }: { className?: string }) {
+interface LanguageToggleProps {
+  className?: string;
+  variant?: "compact" | "block";
+}
+
+const LANGS = [
+  { code: "ka" as const, label: "ქართული", Flag: GeorgianFlag },
+  { code: "en" as const, label: "English", Flag: UKFlag },
+];
+
+export function LanguageToggle({ className, variant = "compact" }: LanguageToggleProps) {
   const { lang, setLang } = useI18n();
+  const current = LANGS.find((l) => l.code === lang) ?? LANGS[0];
+  const CurrentFlag = current.Flag;
+
   return (
-    <div className={cn("inline-flex w-full rounded-[10px] border border-border bg-card p-1", className)}>
-      <button
-        type="button"
-        onClick={() => setLang("ka")}
-        aria-label="ქართული"
+    <DropdownMenu>
+      <DropdownMenuTrigger
         className={cn(
-          "flex flex-1 items-center justify-center gap-2 rounded-[8px] px-3 py-2 text-sm font-medium transition-all duration-200",
-          lang === "ka"
-            ? "bg-primary text-primary-foreground shadow-soft"
-            : "text-ink/60 hover:text-ink",
+          "inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-sm font-medium text-ink shadow-sm outline-none transition-colors hover:bg-secondary focus-visible:ring-2 focus-visible:ring-primary",
+          variant === "block" && "w-full justify-between px-4 py-2.5",
+          className,
         )}
+        aria-label="Language"
       >
-        <GeorgianFlag className="rounded-[2px]" />
-        <span>ქართული</span>
-      </button>
-      <button
-        type="button"
-        onClick={() => setLang("en")}
-        aria-label="English"
-        className={cn(
-          "flex flex-1 items-center justify-center gap-2 rounded-[8px] px-3 py-2 text-sm font-medium transition-all duration-200",
-          lang === "en"
-            ? "bg-primary text-primary-foreground shadow-soft"
-            : "text-ink/60 hover:text-ink",
-        )}
-      >
-        <UKFlag className="rounded-[2px]" />
-        <span>English</span>
-      </button>
-    </div>
+        <span className="flex items-center gap-2">
+          <span className="overflow-hidden rounded-full ring-1 ring-border">
+            <CurrentFlag className="h-4 w-6" />
+          </span>
+          <span>{current.label}</span>
+        </span>
+        <ChevronDown className="h-4 w-4 text-muted-foreground" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-[180px] rounded-[12px] p-1">
+        {LANGS.map(({ code, label, Flag }) => {
+          const active = lang === code;
+          return (
+            <DropdownMenuItem
+              key={code}
+              onClick={() => setLang(code)}
+              className={cn(
+                "cursor-pointer gap-2 rounded-[8px] px-3 py-2 text-sm",
+                active && "bg-brand-soft text-primary",
+              )}
+            >
+              <span className="overflow-hidden rounded-full ring-1 ring-border">
+                <Flag className="h-4 w-6" />
+              </span>
+              <span className="flex-1">{label}</span>
+              {active && <Check className="h-4 w-4" />}
+            </DropdownMenuItem>
+          );
+        })}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

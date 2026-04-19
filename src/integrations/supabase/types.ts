@@ -119,6 +119,109 @@ export type Database = {
         }
         Relationships: []
       }
+      group_check_ins: {
+        Row: {
+          created_at: string
+          date: string
+          group_id: string
+          id: string
+          note: string | null
+          success: boolean
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          date?: string
+          group_id: string
+          id?: string
+          note?: string | null
+          success?: boolean
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          group_id?: string
+          id?: string
+          note?: string | null
+          success?: boolean
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_check_ins_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      group_members: {
+        Row: {
+          group_id: string
+          id: string
+          joined_at: string
+          user_id: string
+        }
+        Insert: {
+          group_id: string
+          id?: string
+          joined_at?: string
+          user_id: string
+        }
+        Update: {
+          group_id?: string
+          id?: string
+          joined_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_members_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      groups: {
+        Row: {
+          challenge_days: number | null
+          challenge_title: string | null
+          created_at: string
+          id: string
+          invite_slug: string
+          name: string
+          owner_id: string
+          start_date: string
+          updated_at: string
+        }
+        Insert: {
+          challenge_days?: number | null
+          challenge_title?: string | null
+          created_at?: string
+          id?: string
+          invite_slug?: string
+          name: string
+          owner_id: string
+          start_date?: string
+          updated_at?: string
+        }
+        Update: {
+          challenge_days?: number | null
+          challenge_title?: string | null
+          created_at?: string
+          id?: string
+          invite_slug?: string
+          name?: string
+          owner_id?: string
+          start_date?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       meals: {
         Row: {
           calories: number
@@ -310,7 +413,13 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_group_member: {
+        Args: { _group_id: string; _user_id: string }
+        Returns: boolean
+      }
+      join_group_by_slug: { Args: { _slug: string }; Returns: string }
       redeem_coach_invite: { Args: { _code: string }; Returns: string }
+      user_in_any_group: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
       activity_level: "sedentary" | "light" | "moderate" | "active" | "extra"
