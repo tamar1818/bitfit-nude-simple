@@ -233,7 +233,7 @@ function CalculatorPage() {
 
         <button
           type="submit"
-          className="w-full rounded-full bg-ink py-4 font-display text-base font-bold text-primary-foreground shadow-card transition-transform active:scale-[0.98]"
+          className="btn-cta w-full rounded-full bg-ink py-4 text-primary-foreground shadow-card transition-transform active:scale-[0.98]"
         >
           {t("calculate")}
         </button>
