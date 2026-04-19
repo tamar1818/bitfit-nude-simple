@@ -14,16 +14,280 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      coach_invites: {
+        Row: {
+          coach_id: string
+          code: string
+          created_at: string
+          expires_at: string
+          id: string
+          used_at: string | null
+          used_by_user_id: string | null
+        }
+        Insert: {
+          coach_id: string
+          code: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          used_at?: string | null
+          used_by_user_id?: string | null
+        }
+        Update: {
+          coach_id?: string
+          code?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          used_at?: string | null
+          used_by_user_id?: string | null
+        }
+        Relationships: []
+      }
+      daily_logs: {
+        Row: {
+          calories_goal: number
+          created_at: string
+          date: string
+          id: string
+          steps: number
+          updated_at: string
+          user_id: string
+          water_ml: number
+        }
+        Insert: {
+          calories_goal?: number
+          created_at?: string
+          date?: string
+          id?: string
+          steps?: number
+          updated_at?: string
+          user_id: string
+          water_ml?: number
+        }
+        Update: {
+          calories_goal?: number
+          created_at?: string
+          date?: string
+          id?: string
+          steps?: number
+          updated_at?: string
+          user_id?: string
+          water_ml?: number
+        }
+        Relationships: []
+      }
+      foods_ge: {
+        Row: {
+          brand: string | null
+          calories_per_100g: number
+          carbs_g: number
+          category: string | null
+          created_at: string
+          fats_g: number
+          id: string
+          name_en: string
+          name_ka: string
+          protein_g: number
+          serving_size_g: number | null
+        }
+        Insert: {
+          brand?: string | null
+          calories_per_100g: number
+          carbs_g?: number
+          category?: string | null
+          created_at?: string
+          fats_g?: number
+          id?: string
+          name_en: string
+          name_ka: string
+          protein_g?: number
+          serving_size_g?: number | null
+        }
+        Update: {
+          brand?: string | null
+          calories_per_100g?: number
+          carbs_g?: number
+          category?: string | null
+          created_at?: string
+          fats_g?: number
+          id?: string
+          name_en?: string
+          name_ka?: string
+          protein_g?: number
+          serving_size_g?: number | null
+        }
+        Relationships: []
+      }
+      meals: {
+        Row: {
+          calories: number
+          carbs_g: number
+          created_at: string
+          date: string
+          fats_g: number
+          food_id: string | null
+          food_name: string
+          id: string
+          meal_type: Database["public"]["Enums"]["meal_type"]
+          protein_g: number
+          servings: number
+          user_id: string
+        }
+        Insert: {
+          calories: number
+          carbs_g?: number
+          created_at?: string
+          date?: string
+          fats_g?: number
+          food_id?: string | null
+          food_name: string
+          id?: string
+          meal_type?: Database["public"]["Enums"]["meal_type"]
+          protein_g?: number
+          servings?: number
+          user_id: string
+        }
+        Update: {
+          calories?: number
+          carbs_g?: number
+          created_at?: string
+          date?: string
+          fats_g?: number
+          food_id?: string | null
+          food_name?: string
+          id?: string
+          meal_type?: Database["public"]["Enums"]["meal_type"]
+          protein_g?: number
+          servings?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "meals_food_id_fkey"
+            columns: ["food_id"]
+            isOneToOne: false
+            referencedRelation: "foods_ge"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          age: number | null
+          avatar_url: string | null
+          coach_id: string | null
+          created_at: string
+          full_name: string | null
+          gender: Database["public"]["Enums"]["user_gender"] | null
+          goal: Database["public"]["Enums"]["user_goal"] | null
+          height_cm: number | null
+          id: string
+          is_coach: boolean
+          language: Database["public"]["Enums"]["user_lang"]
+          onboarded: boolean
+          updated_at: string
+        }
+        Insert: {
+          age?: number | null
+          avatar_url?: string | null
+          coach_id?: string | null
+          created_at?: string
+          full_name?: string | null
+          gender?: Database["public"]["Enums"]["user_gender"] | null
+          goal?: Database["public"]["Enums"]["user_goal"] | null
+          height_cm?: number | null
+          id: string
+          is_coach?: boolean
+          language?: Database["public"]["Enums"]["user_lang"]
+          onboarded?: boolean
+          updated_at?: string
+        }
+        Update: {
+          age?: number | null
+          avatar_url?: string | null
+          coach_id?: string | null
+          created_at?: string
+          full_name?: string | null
+          gender?: Database["public"]["Enums"]["user_gender"] | null
+          goal?: Database["public"]["Enums"]["user_goal"] | null
+          height_cm?: number | null
+          id?: string
+          is_coach?: boolean
+          language?: Database["public"]["Enums"]["user_lang"]
+          onboarded?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      weights: {
+        Row: {
+          created_at: string
+          id: string
+          recorded_at: string
+          target_weight_kg: number | null
+          user_id: string
+          weight_kg: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          recorded_at?: string
+          target_weight_kg?: number | null
+          user_id: string
+          weight_kg: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          recorded_at?: string
+          target_weight_kg?: number | null
+          user_id?: string
+          weight_kg?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      redeem_coach_invite: { Args: { _code: string }; Returns: string }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "user" | "coach" | "admin"
+      meal_type: "breakfast" | "lunch" | "dinner" | "snack"
+      user_gender: "male" | "female" | "other"
+      user_goal: "lose" | "gain" | "maintain"
+      user_lang: "ka" | "en"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +414,12 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["user", "coach", "admin"],
+      meal_type: ["breakfast", "lunch", "dinner", "snack"],
+      user_gender: ["male", "female", "other"],
+      user_goal: ["lose", "gain", "maintain"],
+      user_lang: ["ka", "en"],
+    },
   },
 } as const
