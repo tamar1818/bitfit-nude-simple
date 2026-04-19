@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as CoachRouteImport } from './routes/coach'
@@ -28,6 +29,11 @@ import { Route as CoachClientsIdRouteImport } from './routes/coach.clients.$id'
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingRoute = OnboardingRouteImport.update({
@@ -108,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/coach': typeof CoachRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/onboarding': typeof OnboardingRoute
+  '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/groups': typeof AppGroupsRoute
@@ -125,6 +132,7 @@ export interface FileRoutesByTo {
   '/coach': typeof CoachRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/onboarding': typeof OnboardingRoute
+  '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/groups': typeof AppGroupsRoute
@@ -143,6 +151,7 @@ export interface FileRoutesById {
   '/coach': typeof CoachRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/onboarding': typeof OnboardingRoute
+  '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/groups': typeof AppGroupsRoute
@@ -162,6 +171,7 @@ export interface FileRouteTypes {
     | '/coach'
     | '/forgot-password'
     | '/onboarding'
+    | '/privacy'
     | '/reset-password'
     | '/app/dashboard'
     | '/app/groups'
@@ -179,6 +189,7 @@ export interface FileRouteTypes {
     | '/coach'
     | '/forgot-password'
     | '/onboarding'
+    | '/privacy'
     | '/reset-password'
     | '/app/dashboard'
     | '/app/groups'
@@ -196,6 +207,7 @@ export interface FileRouteTypes {
     | '/coach'
     | '/forgot-password'
     | '/onboarding'
+    | '/privacy'
     | '/reset-password'
     | '/app/dashboard'
     | '/app/groups'
@@ -214,6 +226,7 @@ export interface RootRouteChildren {
   CoachRoute: typeof CoachRouteWithChildren
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   OnboardingRoute: typeof OnboardingRoute
+  PrivacyRoute: typeof PrivacyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   GroupsJoinSlugRoute: typeof GroupsJoinSlugRoute
 }
@@ -225,6 +238,13 @@ declare module '@tanstack/react-router' {
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding': {
@@ -375,18 +395,10 @@ const rootRouteChildren: RootRouteChildren = {
   CoachRoute: CoachRouteWithChildren,
   ForgotPasswordRoute: ForgotPasswordRoute,
   OnboardingRoute: OnboardingRoute,
+  PrivacyRoute: PrivacyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   GroupsJoinSlugRoute: GroupsJoinSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

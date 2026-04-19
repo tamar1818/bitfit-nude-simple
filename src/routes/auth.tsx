@@ -248,6 +248,15 @@ function AuthPage() {
             {mode === "signup" ? t("signIn") : t("signUp")}
           </span>
         </button>
+
+        <div className="mt-4 text-center">
+          <Link
+            to="/privacy"
+            className="text-xs text-muted-foreground underline-offset-4 hover:text-ink hover:underline"
+          >
+            {t("viewPrivacyPolicy")}
+          </Link>
+        </div>
       </div>
 
       <Dialog open={policyOpen} onOpenChange={setPolicyOpen}>

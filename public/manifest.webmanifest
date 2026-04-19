@@ -1,0 +1,33 @@
+{
+  "name": "Bitfit — Your simple fitness companion",
+  "short_name": "Bitfit",
+  "description": "Track calories, water, steps and weight with a calm, beautiful Georgian-first fitness app.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F9F9F9",
+  "theme_color": "#F9F9F9",
+  "lang": "ka",
+  "categories": ["health", "fitness", "lifestyle"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
