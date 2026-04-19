@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { GeorgianFlag, UKFlag } from "./flag-icons";
@@ -19,7 +20,7 @@ const LANGS = [
   { code: "en" as const, label: "English", Flag: UKFlag },
 ];
 
-type FlagComponent = (props: { className?: string }) => React.ReactElement;
+type FlagComponent = (props: { className?: string }) => ReactElement;
 
 function FlagBadge({ Flag }: { Flag: FlagComponent }) {
   // Flags have a 3:2 viewBox; render at 20x20 with object-contain inside a
