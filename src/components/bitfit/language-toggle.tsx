@@ -23,11 +23,11 @@ const LANGS = [
 type FlagComponent = (props: { className?: string }) => ReactElement;
 
 function FlagBadge({ Flag }: { Flag: FlagComponent }) {
-  // Flags have a 3:2 viewBox; render at 20x20 with object-contain inside a
-  // circular mask so they stay crisp without stretching.
+  // Flag SVGs are self-clipped to a circle with a square viewBox, so they
+  // fit a 20x20 box perfectly without stretching.
   return (
-    <span className="flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white ring-1 ring-border">
-      <Flag className="h-5 w-5" />
+    <span className="block h-5 w-5 shrink-0 overflow-hidden rounded-full ring-1 ring-border">
+      <Flag className="block h-full w-full" />
     </span>
   );
 }
