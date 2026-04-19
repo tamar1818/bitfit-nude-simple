@@ -110,37 +110,8 @@ function AuthPage() {
           <p className="mt-3 text-sm text-muted-foreground">{t("tagline")}</p>
         </div>
 
-        {/* OAuth */}
-        <div className="mt-8 space-y-2">
-          <button
-            type="button"
-            onClick={() => handleOAuth("google")}
-            disabled={oauthLoading !== null}
-            className="flex w-full items-center justify-center gap-3 rounded-[10px] border border-border bg-card px-5 py-3.5 text-sm font-medium text-ink transition-colors hover:border-ink/30 disabled:opacity-50"
-          >
-            <GoogleIcon />
-            <span className="btn-cta text-xs">{t("continueWithGoogle")}</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => handleOAuth("apple")}
-            disabled={oauthLoading !== null}
-            className="flex w-full items-center justify-center gap-3 rounded-[10px] border border-border bg-ink px-5 py-3.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
-          >
-            <AppleIcon />
-            <span className="btn-cta text-xs">{t("continueWithApple")}</span>
-          </button>
-        </div>
-
-        <div className="my-6 flex items-center gap-3">
-          <div className="h-px flex-1 bg-border" />
-          <span className="text-xs uppercase tracking-wider text-muted-foreground">
-            {t("orContinueWith")} {t("email")}
-          </span>
-          <div className="h-px flex-1 bg-border" />
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-3">
+        {/* Email form first */}
+        <form onSubmit={handleSubmit} className="mt-8 space-y-3">
           {mode === "signup" && (
             <input
               type="text"
@@ -191,6 +162,37 @@ function AuthPage() {
             {submitting ? t("loading") : mode === "signup" ? t("signUp") : t("signIn")}
           </button>
         </form>
+
+        {/* Divider */}
+        <div className="my-6 flex items-center gap-3">
+          <div className="h-px flex-1 bg-border" />
+          <span className="text-xs uppercase tracking-wider text-muted-foreground">
+            {t("orContinueWith")}
+          </span>
+          <div className="h-px flex-1 bg-border" />
+        </div>
+
+        {/* OAuth below sign-in */}
+        <div className="space-y-2">
+          <button
+            type="button"
+            onClick={() => handleOAuth("google")}
+            disabled={oauthLoading !== null}
+            className="flex w-full items-center justify-center gap-3 rounded-[10px] border border-border bg-card px-5 py-3.5 text-sm font-medium text-ink transition-colors hover:border-ink/30 disabled:opacity-50"
+          >
+            <GoogleIcon />
+            <span className="btn-cta text-xs">{t("continueWithGoogle")}</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => handleOAuth("apple")}
+            disabled={oauthLoading !== null}
+            className="flex w-full items-center justify-center gap-3 rounded-[10px] border border-border bg-ink px-5 py-3.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+          >
+            <AppleIcon />
+            <span className="btn-cta text-xs">{t("continueWithApple")}</span>
+          </button>
+        </div>
 
         <button
           type="button"
