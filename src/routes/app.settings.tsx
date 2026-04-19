@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { LogOut, ChevronRight, GraduationCap, Camera, Moon, Sun } from "lucide-react";
+import { LogOut, ChevronRight, GraduationCap, Camera, Moon, Sun, Trash2, Shield } from "lucide-react";
 import { useAuth } from "@/providers/auth-provider";
 import { useT } from "@/lib/i18n";
 import { useTheme } from "@/providers/theme-provider";
@@ -8,6 +8,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { LanguageToggle } from "@/components/bitfit/language-toggle";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export const Route = createFileRoute("/app/settings")({
   component: SettingsPage,
@@ -29,6 +37,9 @@ function SettingsPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isCoach, setIsCoach] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState("");
+  const [deleting, setDeleting] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -98,6 +109,25 @@ function SettingsPage() {
   const logout = async () => {
     await supabase.auth.signOut();
     navigate({ to: "/auth" });
+  };
+
+  const confirmDelete = async () => {
+    if (deleteConfirm.trim().toUpperCase() !== "DELETE") {
+      toast.error(`${t("deleteAccountTypeToConfirm")} DELETE`);
+      return;
+    }
+    setDeleting(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("delete-account");
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      await supabase.auth.signOut();
+      toast.success(t("accountDeleted"));
+      navigate({ to: "/auth" });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : t("deleteFailed"));
+      setDeleting(false);
+    }
   };
 
   return (
