@@ -42,7 +42,8 @@ function ProgressPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  const target = weights.findLast?.((w) => w.target_weight_kg)?.target_weight_kg ?? null;
+  const target =
+    [...weights].reverse().find((w) => w.target_weight_kg)?.target_weight_kg ?? null;
   const latest = weights[weights.length - 1];
 
   const submitWeight = async () => {
