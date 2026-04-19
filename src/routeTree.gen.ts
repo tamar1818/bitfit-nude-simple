@@ -19,6 +19,7 @@ import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppScannerRouteImport } from './routes/app.scanner'
 import { Route as AppProgressRouteImport } from './routes/app.progress'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
+import { Route as AppCalculatorRouteImport } from './routes/app.calculator'
 import { Route as CoachClientsIdRouteImport } from './routes/coach.clients.$id'
 
 const OnboardingRoute = OnboardingRouteImport.update({
@@ -71,6 +72,11 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCalculatorRoute = AppCalculatorRouteImport.update({
+  id: '/calculator',
+  path: '/calculator',
+  getParentRoute: () => AppRoute,
+} as any)
 const CoachClientsIdRoute = CoachClientsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -83,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/coach': typeof CoachRouteWithChildren
   '/onboarding': typeof OnboardingRoute
+  '/app/calculator': typeof AppCalculatorRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/progress': typeof AppProgressRoute
   '/app/scanner': typeof AppScannerRoute
@@ -96,6 +103,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/coach': typeof CoachRouteWithChildren
   '/onboarding': typeof OnboardingRoute
+  '/app/calculator': typeof AppCalculatorRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/progress': typeof AppProgressRoute
   '/app/scanner': typeof AppScannerRoute
@@ -110,6 +118,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/coach': typeof CoachRouteWithChildren
   '/onboarding': typeof OnboardingRoute
+  '/app/calculator': typeof AppCalculatorRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/progress': typeof AppProgressRoute
   '/app/scanner': typeof AppScannerRoute
@@ -125,6 +134,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/coach'
     | '/onboarding'
+    | '/app/calculator'
     | '/app/dashboard'
     | '/app/progress'
     | '/app/scanner'
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/coach'
     | '/onboarding'
+    | '/app/calculator'
     | '/app/dashboard'
     | '/app/progress'
     | '/app/scanner'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/coach'
     | '/onboarding'
+    | '/app/calculator'
     | '/app/dashboard'
     | '/app/progress'
     | '/app/scanner'
@@ -239,6 +251,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/calculator': {
+      id: '/app/calculator'
+      path: '/calculator'
+      fullPath: '/app/calculator'
+      preLoaderRoute: typeof AppCalculatorRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/coach/clients/$id': {
       id: '/coach/clients/$id'
       path: '/$id'
@@ -250,6 +269,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppCalculatorRoute: typeof AppCalculatorRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppProgressRoute: typeof AppProgressRoute
   AppScannerRoute: typeof AppScannerRoute
@@ -257,6 +277,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppCalculatorRoute: AppCalculatorRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppProgressRoute: AppProgressRoute,
   AppScannerRoute: AppScannerRoute,
@@ -297,12 +318,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
