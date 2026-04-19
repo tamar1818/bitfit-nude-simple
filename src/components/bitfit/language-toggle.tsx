@@ -28,16 +28,14 @@ export function LanguageToggle({ className, variant = "compact" }: LanguageToggl
     <DropdownMenu>
       <DropdownMenuTrigger
         className={cn(
-          "inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-sm font-medium text-ink shadow-sm outline-none transition-colors hover:bg-secondary focus-visible:ring-2 focus-visible:ring-primary",
+          "inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-sm font-medium text-ink outline-none transition-colors hover:bg-secondary focus-visible:ring-2 focus-visible:ring-primary",
           variant === "block" && "w-full justify-between px-4 py-2.5",
           className,
         )}
         aria-label="Language"
       >
         <span className="flex items-center gap-2">
-          <span className="flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
-            <CurrentFlag className="h-full w-full object-cover" />
-          </span>
+          <FlagBadge Flag={CurrentFlag} />
           <span className="normal-case">{current.label}</span>
         </span>
         <ChevronDown className="h-4 w-4 text-muted-foreground" />
@@ -54,9 +52,7 @@ export function LanguageToggle({ className, variant = "compact" }: LanguageToggl
                 active && "bg-brand-soft text-primary",
               )}
             >
-              <span className="flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
-                <Flag className="h-full w-full object-cover" />
-              </span>
+              <FlagBadge Flag={Flag} />
               <span className="flex-1 normal-case">{label}</span>
               {active && <Check className="h-4 w-4" />}
             </DropdownMenuItem>
