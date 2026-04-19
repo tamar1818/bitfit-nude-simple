@@ -129,33 +129,63 @@ function AuthPage() {
           {mode === "signup" && (
             <input
               type="text"
-              placeholder={t("fullName")}
+              placeholder={`${t("fullName")} *`}
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="w-full rounded-[10px] border border-border bg-card px-5 py-4 text-base outline-none transition-colors focus:border-primary"
+              className="w-full rounded-[10px] border border-border bg-card px-5 py-4 text-base outline-none transition-colors focus:border-primary invalid:border-destructive/40"
               required
               maxLength={100}
+              aria-required="true"
             />
           )}
           <input
             type="email"
-            placeholder={t("email")}
+            placeholder={`${t("email")} *`}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-[10px] border border-border bg-card px-5 py-4 text-base outline-none transition-colors focus:border-primary"
+            className="w-full rounded-[10px] border border-border bg-card px-5 py-4 text-base outline-none transition-colors focus:border-primary invalid:border-destructive/40"
             required
             maxLength={255}
+            aria-required="true"
           />
           <input
             type="password"
-            placeholder={t("password")}
+            placeholder={`${t("password")} *`}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-[10px] border border-border bg-card px-5 py-4 text-base outline-none transition-colors focus:border-primary"
+            className="w-full rounded-[10px] border border-border bg-card px-5 py-4 text-base outline-none transition-colors focus:border-primary invalid:border-destructive/40"
             required
             minLength={6}
             maxLength={72}
+            aria-required="true"
           />
+
+          {mode === "signup" && (
+            <label className="flex cursor-pointer items-start gap-3 rounded-[10px] border border-border bg-card/50 px-4 py-3 text-sm text-ink/80 transition-colors hover:bg-card">
+              <input
+                type="checkbox"
+                checked={acceptedPolicy}
+                onChange={(e) => setAcceptedPolicy(e.target.checked)}
+                className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer accent-primary"
+                required
+                aria-required="true"
+              />
+              <span className="leading-snug">
+                {t("acceptPolicyPrefix")}{" "}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setPolicyOpen(true);
+                  }}
+                  className="font-medium text-ink underline underline-offset-2 hover:text-primary"
+                >
+                  {t("privacyPolicy")}
+                </button>{" "}
+                {t("andTerms")}
+              </span>
+            </label>
+          )}
 
           {mode === "signin" && (
             <div className="flex justify-end">
