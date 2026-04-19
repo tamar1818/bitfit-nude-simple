@@ -1,74 +1,68 @@
 
-All four scoping questions answered. Locking in:
-- **v1 = Full**: Auth + DB + Coach Mode + AI scanner
-- **Scanner = Georgian food DB** (searchable, with planned AI image add-on later)
-- **Coach linking = Invite code**
-- **Languages = Georgian first, English second, with toggle in Settings**
+The user is asking for guidance on how to publish their Bitfit web app to the App Store. This is a research/guidance question — no code changes needed yet, but they may want to act on it. Let me lay out the realistic path clearly.
 
-Design references (Nixtio + the fitness dashboard) define the look: oversized white rounded cards on `#F9F9F9`, big circular calorie ring, pastel-tinted sub-cards (lavender/mint/peach), pill tabs, floating bottom nav, mixed-weight headings.
+## The reality
 
-## Plan: Bitfit v1
+Lovable builds **web apps** (React + Vite running in the browser). The Apple App Store only accepts **native iOS apps** (compiled binaries). To bridge the gap, you wrap your published Lovable web app inside a thin native shell using **Capacitor** — this is the standard, Apple-approved approach.
 
-### 1. Backend (Lovable Cloud)
-Tables (all RLS-protected):
-- `profiles` — id, full_name, age, gender, height_cm, goal (lose/gain/maintain), language ('ka'|'en'), is_coach, coach_id (nullable)
-- `weights` — user_id, weight_kg, target_weight_kg, recorded_at
-- `daily_logs` — user_id, date, water_ml, steps, calories_goal
-- `meals` — user_id, date, food_id, name, calories, protein, carbs, fats, meal_type
-- `foods_ge` — Georgian food DB seeded from your blueprint (khinkali, khachapuri, Sante, Nikora, etc.) with calories + macros per 100g
-- `coach_invites` — code (unique), coach_id, expires_at, used_by
-- `user_roles` + `app_role` enum (`user`, `coach`, `admin`) with `has_role()` security-definer function
+## Requirements before you start
 
-Auth: Email + Password. Trigger creates profile + default daily_log on signup.
+1. **A Mac computer** (Xcode only runs on macOS) — this is a hard Apple requirement
+2. **Apple Developer Program membership** — $99/year at developer.apple.com
+3. **Xcode** installed (free from the Mac App Store)
+4. Your project **exported to GitHub** (Lovable → GitHub button, top right)
 
-### 2. Routes (TanStack file-based)
-```
-src/routes/
-  __root.tsx                 — shell, fonts, QueryClientProvider, AuthProvider, i18n
-  index.tsx                  — Landing → redirects to /app or /auth
-  auth.tsx                   — Login + Signup tabs
-  onboarding.tsx             — 4-step wizard (goal → identity → body → invite code)
-  _app.tsx                   — Authenticated layout (bottom nav + Outlet)
-  _app/dashboard.tsx         — Calorie ring, water, steps, today's meals
-  _app/scanner.tsx           — Searchable Georgian food DB + add to log
-  _app/progress.tsx          — Weight chart, streaks
-  _app/settings.tsx          — Language toggle, profile, logout
-  _coach.tsx                 — Coach-only layout (role guard via has_role)
-  _coach/clients.tsx         — Client list with avatars, today's stats
-  _coach/clients.$id.tsx     — Single client detail
-```
+## Step-by-step path
 
-### 3. Design system (`src/styles.css`)
-Tokens (HSL):
-- bg `#F9F9F9`, card `#FFFFFF`, nude `#F3EEEA`, ink `#1A1A1A`, muted `#757575`
-- pastels: lavender `#E8E6FF`, mint `#E8F5E9`, peach `#FFE8D9`, sky `#E3F2FD`
-- accent `#A3E635` (success/health)
-- radius: card 24px, button 12px, pill 999px
-- shadow-soft: `0 4px 20px rgba(0,0,0,0.03)`
-- fonts: Plus Jakarta Sans (display) + Inter (body) via Google Fonts in `__root.tsx` head
+**Phase 1 — Publish on Lovable (5 min)**
+- Click **Publish** in Lovable to get your live `.lovable.app` URL
+- Test the app on your phone via Safari first to catch obvious issues
 
-### 4. Reusable components (`src/components/bitfit/`)
-- `CalorieRing` — SVG progress, shows eaten/burned/remaining
-- `StatCard` — pastel-tinted card with icon + label + value
-- `WaterTracker` — glass row with +/− buttons, optimistic updates
-- `StepCounter` — horizontal bar
-- `MacroBars` — protein/carbs/fats
-- `MealRow` — food entry row with delete
-- `BottomNav` — floating rounded nav, 4 icons + center scan FAB
-- `LanguageToggle` — KA/EN segmented switch
-- `FoodSearchSheet` — bottom sheet with search + result cards
+**Phase 2 — Wrap with Capacitor (1–2 hours)**
+- Export to GitHub, clone the repo locally on your Mac
+- Run `npm install` then add Capacitor:
+  - `npm install @capacitor/core @capacitor/ios @capacitor/cli`
+  - `npx cap init Bitfit com.yourname.bitfit`
+  - `npm run build`
+  - `npx cap add ios`
+  - `npx cap sync`
+- Configure `capacitor.config.ts` to point to your published Lovable URL (or use the bundled `dist/` for offline)
 
-### 5. i18n
-Lightweight in-house solution: `src/lib/i18n.ts` with `ka.json` + `en.json`, `useT()` hook, default `ka`, persisted in profile + localStorage. No extra dependency.
+**Phase 3 — Prepare in Xcode (1–2 hours)**
+- `npx cap open ios` opens the project in Xcode
+- Set bundle ID, version, app icon (1024×1024), splash screen
+- Add required permissions to `Info.plist` (camera for the scanner, etc.)
+- Sign with your Apple Developer account
+- Test on a real iPhone via USB
 
-### 6. AI placeholder
-Scanner uses DB search for v1. UI includes a camera button that opens a "Coming soon" sheet — we'll wire Lovable AI Gemini Flash image recognition in v2.
+**Phase 4 — Submit to App Store (1–2 weeks for review)**
+- Create app listing in **App Store Connect**: name, description (Georgian + English), screenshots (6.7", 6.5", 5.5"), privacy policy URL
+- Archive build in Xcode → upload to App Store Connect
+- Submit to **TestFlight** first for beta testing with up to 10,000 users (no review needed for internal testers)
+- Submit for App Store review (typically 24–48h, sometimes longer)
 
-### Build order
-1. Cloud setup: tables, RLS, trigger, seed `foods_ge` (~40 Georgian items)
-2. Design tokens + fonts + base layout
-3. Auth + onboarding flow
-4. Dashboard + components
-5. Food scanner (search) + meal logging
-6. Progress + settings + i18n
-7. Coach role + invite code + clients view
+## Important Apple gotchas for Bitfit specifically
+
+- **Privacy policy URL is mandatory** — you'll need a public `/privacy` page (currently it's a modal only)
+- **Camera permission usage description** must explain the food scanner clearly in `Info.plist`
+- **Sign in with Apple is required** if you offer Google sign-in — Apple will reject the app otherwise
+- **Account deletion** must be available in-app (not just disable) — Apple enforces this for any app with user accounts
+- **No external payment links** if you ever add subscriptions (must use Apple's IAP, 15–30% fee)
+
+## Faster alternative — PWA on home screen (no App Store)
+
+If you just want users to install Bitfit on their phone today:
+- Publish on Lovable
+- Users open the URL in Safari → Share → **Add to Home Screen**
+- Looks and feels like a native app, no $99/year, no review
+
+I can also make the app a proper **installable PWA** (manifest, icons, offline cache) so the home-screen experience is more polished.
+
+## What I'd recommend doing now
+
+1. **Publish on Lovable** (one click) so you have a real URL to test
+2. **Add the missing App Store prerequisites to the codebase**: public `/privacy` route, Sign in with Apple, in-app account deletion
+3. **Make it a PWA** so it works great on phones immediately
+4. Then tackle Capacitor when you have a Mac + Apple Developer account ready
+
+Pick which of these you want me to do next.
