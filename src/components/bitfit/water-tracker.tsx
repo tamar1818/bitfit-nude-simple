@@ -16,50 +16,52 @@ export function WaterTracker({ ml, goalMl = 2500, onChange }: WaterTrackerProps)
   const goalGlasses = Math.ceil(goalMl / STEP);
 
   return (
-    <div className="rounded-3xl bg-sky p-5 shadow-soft">
+    <div className="rounded-[16px] border border-border bg-card p-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-background/40">
-            <Droplet className="h-4 w-4 text-ink" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-[8px] bg-brand-soft text-primary">
+            <Droplet className="h-3.5 w-3.5" />
           </div>
-          <span className="text-xs font-medium uppercase tracking-wider text-ink/70">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
             {t("water")}
           </span>
         </div>
-        <div className="text-xs text-ink/60">
-          {ml} {t("of")} {goalMl} ml
+        <div className="text-[11px] font-medium text-muted-foreground">
+          {ml} / {goalMl}ml
         </div>
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="mt-2 flex flex-wrap gap-1">
         {Array.from({ length: goalGlasses }).map((_, i) => (
           <div
             key={i}
             className={cn(
-              "h-6 w-3 rounded-sm border border-ink/20 transition-colors",
-              i < glasses ? "bg-ink" : "bg-background/40",
+              "h-4 flex-1 rounded-sm transition-colors",
+              i < glasses ? "bg-primary" : "bg-secondary",
             )}
           />
         ))}
       </div>
 
-      <div className="mt-4 flex items-center justify-between">
+      <div className="mt-2 flex items-center justify-between">
         <button
           type="button"
           onClick={() => onChange(Math.max(0, ml - STEP))}
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-background/60 text-ink hover:bg-background"
+          className="flex h-8 w-8 items-center justify-center rounded-[8px] bg-secondary text-ink hover:bg-brand-soft hover:text-primary"
+          aria-label="-"
         >
-          <Minus className="h-4 w-4" />
+          <Minus className="h-3.5 w-3.5" />
         </button>
-        <span className="font-display text-xl font-bold text-ink">
+        <span className="font-display text-sm font-bold text-ink">
           {glasses} {t("glass")}
         </span>
         <button
           type="button"
           onClick={() => onChange(ml + STEP)}
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-ink text-primary-foreground hover:opacity-90"
+          className="flex h-8 w-8 items-center justify-center rounded-[8px] bg-primary text-primary-foreground hover:opacity-90"
+          aria-label="+"
         >
-          <Plus className="h-4 w-4" />
+          <Plus className="h-3.5 w-3.5" />
         </button>
       </div>
     </div>
