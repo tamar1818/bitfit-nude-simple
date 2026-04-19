@@ -194,6 +194,17 @@ export const translations = {
     accept: "ვეთანხმები",
     decline: "უარი",
     policyDeclined: "პოლიტიკის გარეშე რეგისტრაცია შეუძლებელია",
+    // Account deletion
+    deleteAccount: "ანგარიშის წაშლა",
+    deleteAccountTitle: "ნამდვილად გინდა ანგარიშის წაშლა?",
+    deleteAccountDesc: "ეს ქმედება შეუქცევადია. ყველა შენი მონაცემი — წონა, კერძები, აქტივობა — სამუდამოდ წაიშლება.",
+    deleteAccountConfirm: "დიახ, წაშალე",
+    deleteAccountTypeToConfirm: "დასადასტურებლად აკრიფე",
+    accountDeleted: "ანგარიში წაიშალა",
+    deleteFailed: "წაშლა ვერ მოხერხდა",
+    legal: "სამართლებრივი",
+    viewPrivacyPolicy: "კონფიდენციალურობის პოლიტიკა",
+    dangerZone: "საშიში ზონა",
   },
   en: {
     appName: "Bitfit",
@@ -377,6 +388,17 @@ export const translations = {
     accept: "Accept",
     decline: "Decline",
     policyDeclined: "You must accept the policy to register",
+    // Account deletion
+    deleteAccount: "Delete account",
+    deleteAccountTitle: "Delete your account?",
+    deleteAccountDesc: "This action is permanent. All your data — weights, meals, activity — will be erased and cannot be recovered.",
+    deleteAccountConfirm: "Yes, delete",
+    deleteAccountTypeToConfirm: "Type to confirm:",
+    accountDeleted: "Account deleted",
+    deleteFailed: "Failed to delete account",
+    legal: "Legal",
+    viewPrivacyPolicy: "Privacy Policy",
+    dangerZone: "Danger zone",
   },
 } as const;
 
