@@ -338,7 +338,7 @@ function OnboardingPage() {
             <>
               <h2 className="font-display text-3xl font-bold text-ink">{t("coachInvite")}</h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                Enter a code from your coach to link your account.
+                {t("coachInviteDesc")}
               </p>
               <div className="mt-8">
                 <input

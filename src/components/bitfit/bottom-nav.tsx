@@ -27,8 +27,8 @@ export function BottomNav() {
               className={cn(
                 "flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-[12px] px-2.5 transition-all duration-200",
                 active
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:bg-brand-soft hover:text-primary",
+                  ? "bg-brand-soft text-primary"
+                  : "text-muted-foreground hover:bg-secondary hover:text-ink",
               )}
               aria-label={item.label}
             >
@@ -40,7 +40,7 @@ export function BottomNav() {
           );
         })}
 
-        {/* Center scan button — raised, brand red */}
+        {/* Center scan button — raised, brand red (the only red tab) */}
         <Link
           to="/app/scanner"
           className="mx-1 flex h-12 w-12 items-center justify-center rounded-[14px] bg-primary text-primary-foreground shadow-float transition-transform duration-200 hover:scale-110 active:scale-95"
@@ -59,8 +59,8 @@ export function BottomNav() {
               className={cn(
                 "flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-[12px] px-2.5 transition-all duration-200",
                 active
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:bg-brand-soft hover:text-primary",
+                  ? "bg-brand-soft text-primary"
+                  : "text-muted-foreground hover:bg-secondary hover:text-ink",
               )}
               aria-label={item.label}
             >

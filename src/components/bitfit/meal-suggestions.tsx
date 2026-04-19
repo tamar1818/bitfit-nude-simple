@@ -79,66 +79,87 @@ export function MealSuggestions({ remainingCalories, goal, onLogged }: Props) {
     onLogged?.();
   };
 
+  // Pastel rotation so cards aren't all red — green/peach/sky/lavender
+  const tints = [
+    { bg: "bg-[color:var(--success-soft)]", fg: "text-[color:var(--success)]" },
+    { bg: "bg-[color:var(--warning-soft)]", fg: "text-[color:var(--warning)]" },
+    { bg: "bg-[color:var(--info-soft)]", fg: "text-[color:var(--info)]" },
+    { bg: "bg-lavender", fg: "text-ink" },
+  ];
+
+  const remainingPositive = Math.max(remainingCalories, 0);
+  const deficitText =
+    lang === "ka"
+      ? `დარჩენილი ${remainingPositive} კალორია`
+      : `${remainingPositive} kcal left to hit your goal`;
+
   return (
     <div className="rounded-[16px] border border-border bg-card p-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-brand-soft text-primary">
+          <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-[color:var(--info-soft)] text-[color:var(--info)]">
             <Sparkles className="h-4 w-4" />
           </span>
           <div>
             <div className="font-display text-sm font-bold text-ink">
               {lang === "ka" ? "AI შემოთავაზება" : "AI suggestions"}
             </div>
-            <div className="text-[11px] text-muted-foreground">
-              {lang === "ka"
-                ? `დარჩა ${Math.max(remainingCalories, 0)} კალორია`
-                : `${Math.max(remainingCalories, 0)} kcal left`}
-            </div>
+            <div className="text-[11px] text-muted-foreground">{deficitText}</div>
           </div>
         </div>
         <button
           type="button"
           onClick={fetchSuggestions}
           disabled={loading}
-          className="flex h-9 items-center gap-1.5 rounded-[10px] bg-primary px-3 text-xs font-semibold text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+          className="flex h-9 items-center gap-1.5 rounded-[10px] bg-ink px-3 text-xs font-semibold text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
         >
           <RefreshCw className={cn("h-3.5 w-3.5", loading && "animate-spin")} />
-          <span className="btn-cta">{lang === "ka" ? "მითხარი" : "Suggest"}</span>
+          <span>{lang === "ka" ? "მითხარი" : "Suggest"}</span>
         </button>
       </div>
 
       {items.length > 0 && (
         <div className="mt-3 space-y-2">
-          {items.map((s) => (
-            <div
-              key={s.name}
-              className="bf-step-in flex items-center gap-3 rounded-[12px] border border-border bg-background p-3"
-            >
+          {items.map((s, idx) => {
+            const tint = tints[idx % tints.length];
+            return (
               <div
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[10px] bg-brand-soft text-2xl"
-                aria-hidden
+                key={s.name}
+                className="bf-step-in flex items-center gap-3 rounded-[12px] border border-border bg-background p-3 transition-shadow hover:shadow-card"
               >
-                {s.emoji}
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="truncate text-sm font-semibold text-ink">{s.name}</div>
-                <div className="text-[11px] text-muted-foreground">
-                  {Math.round(s.calories)} {t("calories")} · P{Math.round(s.protein_g)} C{Math.round(s.carbs_g)} F{Math.round(s.fats_g)}
+                <div
+                  className={cn(
+                    "flex h-12 w-12 shrink-0 items-center justify-center rounded-[10px] text-2xl",
+                    tint.bg,
+                    tint.fg,
+                  )}
+                  aria-hidden
+                >
+                  {s.emoji}
                 </div>
-                <div className="mt-0.5 truncate text-[10px] italic text-muted-foreground">{s.why}</div>
+                <div className="min-w-0 flex-1">
+                  <div className="truncate text-sm font-semibold text-ink">{s.name}</div>
+                  <div className="text-[11px] text-muted-foreground">
+                    {Math.round(s.calories)} {t("calories")} · P{Math.round(s.protein_g)} C{Math.round(s.carbs_g)} F{Math.round(s.fats_g)}
+                  </div>
+                  <div className="mt-0.5 truncate text-[10px] italic text-muted-foreground">{s.why}</div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => logMeal(s, "snack")}
+                  disabled={adding === s.name}
+                  className={cn(
+                    "flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] transition-transform hover:scale-110 active:scale-95 disabled:opacity-50",
+                    tint.bg,
+                    tint.fg,
+                  )}
+                  aria-label="Add"
+                >
+                  <Plus className="h-4 w-4" />
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={() => logMeal(s, "snack")}
-                disabled={adding === s.name}
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-primary text-primary-foreground transition-transform hover:scale-105 disabled:opacity-50"
-                aria-label="Add"
-              >
-                <Plus className="h-4 w-4" />
-              </button>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
