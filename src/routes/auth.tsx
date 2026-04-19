@@ -7,6 +7,14 @@ import { useT } from "@/lib/i18n";
 import { LanguageToggle } from "@/components/bitfit/language-toggle";
 import { Logo } from "@/components/bitfit/logo";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/auth")({
   component: AuthPage,
