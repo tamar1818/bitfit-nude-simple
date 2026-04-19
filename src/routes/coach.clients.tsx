@@ -84,7 +84,7 @@ function ClientsPage() {
       <button
         type="button"
         onClick={createInvite}
-        className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-ink py-4 font-medium text-primary-foreground shadow-card"
+        className="btn-cta mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-ink py-4 text-primary-foreground shadow-card"
       >
         <Plus className="h-4 w-4" />
         {t("createInvite")}

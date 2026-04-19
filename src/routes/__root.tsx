@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { I18nProvider } from "@/providers/i18n-provider";
 import { AuthProvider } from "@/providers/auth-provider";
+import { Splash } from "@/components/bitfit/splash";
 
 import appCss from "../styles.css?url";
 
@@ -78,6 +79,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <I18nProvider>
         <AuthProvider>
+          <Splash />
           <Outlet />
           <Toaster position="top-center" />
         </AuthProvider>

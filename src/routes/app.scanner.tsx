@@ -214,7 +214,7 @@ function ScannerPage() {
             <button
               type="button"
               onClick={addMeal}
-              className="mt-6 w-full rounded-full bg-ink py-4 font-medium text-primary-foreground"
+              className="btn-cta mt-6 w-full rounded-full bg-ink py-4 text-primary-foreground"
             >
               {t("add")}
             </button>
@@ -236,7 +236,7 @@ function ScannerPage() {
             <button
               type="button"
               onClick={() => setAiOpen(false)}
-              className="mt-6 w-full rounded-full bg-ink py-4 font-medium text-primary-foreground"
+              className="btn-cta mt-6 w-full rounded-full bg-ink py-4 text-primary-foreground"
             >
               OK
             </button>

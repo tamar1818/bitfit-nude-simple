@@ -244,7 +244,7 @@ function OnboardingPage() {
               type="button"
               onClick={finish}
               disabled={submitting}
-              className="flex-1 rounded-full bg-ink py-4 font-medium text-primary-foreground shadow-card hover:opacity-90 disabled:opacity-50"
+              className="btn-cta flex-1 rounded-full bg-ink py-4 text-primary-foreground shadow-card hover:opacity-90 disabled:opacity-50"
             >
               {submitting ? t("loading") : t("finish")}
             </button>
@@ -253,7 +253,7 @@ function OnboardingPage() {
               type="button"
               onClick={() => setStep(step + 1)}
               disabled={!canNext()}
-              className="flex flex-1 items-center justify-center gap-2 rounded-full bg-ink py-4 font-medium text-primary-foreground shadow-card hover:opacity-90 disabled:opacity-30"
+              className="btn-cta flex flex-1 items-center justify-center gap-2 rounded-full bg-ink py-4 text-primary-foreground shadow-card hover:opacity-90 disabled:opacity-30"
             >
               {t("next")} <ArrowRight className="h-4 w-4" />
             </button>
