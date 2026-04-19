@@ -10,17 +10,25 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as CoachRouteImport } from './routes/coach'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CoachClientsRouteImport } from './routes/coach.clients'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppScannerRouteImport } from './routes/app.scanner'
 import { Route as AppProgressRouteImport } from './routes/app.progress'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
+import { Route as CoachClientsIdRouteImport } from './routes/coach.clients.$id'
 
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoachRoute = CoachRouteImport.update({
+  id: '/coach',
+  path: '/coach',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -37,6 +45,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const CoachClientsRoute = CoachClientsRouteImport.update({
+  id: '/clients',
+  path: '/clients',
+  getParentRoute: () => CoachRoute,
 } as any)
 const AppSettingsRoute = AppSettingsRouteImport.update({
   id: '/settings',
@@ -58,37 +71,51 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
+const CoachClientsIdRoute = CoachClientsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => CoachClientsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/coach': typeof CoachRouteWithChildren
   '/onboarding': typeof OnboardingRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/progress': typeof AppProgressRoute
   '/app/scanner': typeof AppScannerRoute
   '/app/settings': typeof AppSettingsRoute
+  '/coach/clients': typeof CoachClientsRouteWithChildren
+  '/coach/clients/$id': typeof CoachClientsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/coach': typeof CoachRouteWithChildren
   '/onboarding': typeof OnboardingRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/progress': typeof AppProgressRoute
   '/app/scanner': typeof AppScannerRoute
   '/app/settings': typeof AppSettingsRoute
+  '/coach/clients': typeof CoachClientsRouteWithChildren
+  '/coach/clients/$id': typeof CoachClientsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/coach': typeof CoachRouteWithChildren
   '/onboarding': typeof OnboardingRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/progress': typeof AppProgressRoute
   '/app/scanner': typeof AppScannerRoute
   '/app/settings': typeof AppSettingsRoute
+  '/coach/clients': typeof CoachClientsRouteWithChildren
+  '/coach/clients/$id': typeof CoachClientsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -96,37 +123,47 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/auth'
+    | '/coach'
     | '/onboarding'
     | '/app/dashboard'
     | '/app/progress'
     | '/app/scanner'
     | '/app/settings'
+    | '/coach/clients'
+    | '/coach/clients/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/app'
     | '/auth'
+    | '/coach'
     | '/onboarding'
     | '/app/dashboard'
     | '/app/progress'
     | '/app/scanner'
     | '/app/settings'
+    | '/coach/clients'
+    | '/coach/clients/$id'
   id:
     | '__root__'
     | '/'
     | '/app'
     | '/auth'
+    | '/coach'
     | '/onboarding'
     | '/app/dashboard'
     | '/app/progress'
     | '/app/scanner'
     | '/app/settings'
+    | '/coach/clients'
+    | '/coach/clients/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
+  CoachRoute: typeof CoachRouteWithChildren
   OnboardingRoute: typeof OnboardingRoute
 }
 
@@ -137,6 +174,13 @@ declare module '@tanstack/react-router' {
       path: '/onboarding'
       fullPath: '/onboarding'
       preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/coach': {
+      id: '/coach'
+      path: '/coach'
+      fullPath: '/coach'
+      preLoaderRoute: typeof CoachRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -159,6 +203,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/coach/clients': {
+      id: '/coach/clients'
+      path: '/clients'
+      fullPath: '/coach/clients'
+      preLoaderRoute: typeof CoachClientsRouteImport
+      parentRoute: typeof CoachRoute
     }
     '/app/settings': {
       id: '/app/settings'
@@ -188,6 +239,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
+    '/coach/clients/$id': {
+      id: '/coach/clients/$id'
+      path: '/$id'
+      fullPath: '/coach/clients/$id'
+      preLoaderRoute: typeof CoachClientsIdRouteImport
+      parentRoute: typeof CoachClientsRoute
+    }
   }
 }
 
@@ -207,12 +265,44 @@ const AppRouteChildren: AppRouteChildren = {
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
+interface CoachClientsRouteChildren {
+  CoachClientsIdRoute: typeof CoachClientsIdRoute
+}
+
+const CoachClientsRouteChildren: CoachClientsRouteChildren = {
+  CoachClientsIdRoute: CoachClientsIdRoute,
+}
+
+const CoachClientsRouteWithChildren = CoachClientsRoute._addFileChildren(
+  CoachClientsRouteChildren,
+)
+
+interface CoachRouteChildren {
+  CoachClientsRoute: typeof CoachClientsRouteWithChildren
+}
+
+const CoachRouteChildren: CoachRouteChildren = {
+  CoachClientsRoute: CoachClientsRouteWithChildren,
+}
+
+const CoachRouteWithChildren = CoachRoute._addFileChildren(CoachRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
+  CoachRoute: CoachRouteWithChildren,
   OnboardingRoute: OnboardingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
