@@ -55,6 +55,7 @@ function DashboardPage() {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [goalKind, setGoalKind] = useState<"lose" | "gain" | "maintain" | null>(null);
   const [stepsInput, setStepsInput] = useState("");
+  const [burned, setBurned] = useState(0);
 
   const loadAll = async () => {
     if (!user) return;
@@ -136,7 +137,8 @@ function DashboardPage() {
   }, [meals]);
 
   const goal = log?.calories_goal ?? 2000;
-  const remaining = Math.max(goal - totals.cal, 0);
+  const netEaten = Math.max(totals.cal - burned, 0);
+  const remaining = Math.max(goal - netEaten, 0);
   const stepsGoal = 10000;
   const stepsPct = Math.min(((log?.steps ?? 0) / stepsGoal) * 100, 100);
 
@@ -180,15 +182,19 @@ function DashboardPage() {
       {/* 2. Hero ring */}
       <div className="bf-bounce-in mt-6 rounded-[16px] border border-border bg-card p-6" style={{ animationDelay: "60ms" }}>
         <div className="flex flex-col items-center">
-          <CalorieRing eaten={totals.cal} goal={goal} />
-          <div className="mt-4 grid w-full grid-cols-2 gap-3 text-center">
-            <div className="rounded-[12px] bg-brand-soft p-3">
-              <div className="text-[10px] font-semibold uppercase tracking-wider text-primary">{t("eaten")}</div>
-              <div className="font-display text-xl font-bold text-ink">{Math.round(totals.cal)}</div>
+          <CalorieRing eaten={totals.cal} goal={goal} burned={burned} />
+          <div className="mt-4 grid w-full grid-cols-3 gap-2 text-center">
+            <div className="rounded-[12px] bg-[color:var(--warning-soft)] p-2.5">
+              <div className="text-[10px] font-semibold uppercase tracking-wider text-[color:var(--warning)]">{t("eaten")}</div>
+              <div className="font-display text-base font-bold text-ink">{Math.round(totals.cal)}</div>
             </div>
-            <div className="rounded-[12px] bg-secondary p-3">
+            <div className="rounded-[12px] bg-[color:var(--success-soft)] p-2.5">
+              <div className="text-[10px] font-semibold uppercase tracking-wider text-[color:var(--success)]">{t("burned")}</div>
+              <div className="font-display text-base font-bold text-ink">{Math.round(burned)}</div>
+            </div>
+            <div className="rounded-[12px] bg-secondary p-2.5">
               <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("goal")}</div>
-              <div className="font-display text-xl font-bold text-ink">{goal}</div>
+              <div className="font-display text-base font-bold text-ink">{goal}</div>
             </div>
           </div>
           <div className="mt-4 w-full">
@@ -299,7 +305,12 @@ function DashboardPage() {
         <MealSuggestions remainingCalories={remaining} goal={goalKind} onLogged={loadAll} />
       </div>
 
-      {/* 5. Compact water + steps row */}
+      {/* 5. Activity tracker (walks, gym, swim, etc.) */}
+      <div className="bf-bounce-in mt-6" style={{ animationDelay: "180ms" }}>
+        <ActivityTracker onChange={setBurned} />
+      </div>
+
+      {/* 6. Compact water + steps row */}
       <div className="mt-6 grid grid-cols-2 gap-3">
         {log && <WaterTracker ml={log.water_ml} onChange={updateWater} />}
         <div className="rounded-[16px] border border-border bg-card p-3">
