@@ -257,3 +257,18 @@ html[lang="ka"] {
 .bf-flame      { animation: bf-flame 1.6s ease-in-out infinite; transform-origin: center bottom; }
 .bf-step-in    { animation: bf-step-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
 .bf-splash-out { animation: bf-fade-out 0.4s ease-in 1.6s forwards; }
+
+/* Tab pop effect for active bottom-nav icons */
+@keyframes bf-pop-tab {
+  0%   { transform: scale(0.9); }
+  60%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+.bf-pop-tab { animation: bf-pop-tab 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* Bounce-in for cards / suggestions */
+@keyframes bf-bounce-in {
+  0%   { opacity: 0; transform: translateY(8px) scale(0.97); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.bf-bounce-in { animation: bf-bounce-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
