@@ -19,7 +19,7 @@ const LANGS = [
   { code: "en" as const, label: "English", Flag: UKFlag },
 ];
 
-type FlagComponent = (props: { className?: string }) => JSX.Element;
+type FlagComponent = (props: { className?: string }) => React.ReactElement;
 
 function FlagBadge({ Flag }: { Flag: FlagComponent }) {
   // Flags have a 3:2 viewBox; render at 20x20 with object-contain inside a
