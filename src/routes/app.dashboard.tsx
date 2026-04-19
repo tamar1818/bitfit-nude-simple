@@ -11,6 +11,7 @@ import { MacroBars } from "@/components/bitfit/macro-bars";
 import { Logo } from "@/components/bitfit/logo";
 import { MealAvatar } from "@/components/bitfit/meal-emoji";
 import { MealSuggestions } from "@/components/bitfit/meal-suggestions";
+import { ActivityTracker } from "@/components/bitfit/activity-tracker";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
