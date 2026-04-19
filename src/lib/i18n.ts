@@ -9,7 +9,7 @@ export const translations = {
     // Auth
     signIn: "შესვლა",
     signUp: "რეგისტრაცია",
-    email: "ელფოსტა",
+    email: "ელ-ფოსტა",
     password: "პაროლი",
     fullName: "სახელი და გვარი",
     haveAccount: "უკვე გაქვს ანგარიში?",
