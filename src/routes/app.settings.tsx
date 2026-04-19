@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { LogOut, ChevronRight, GraduationCap } from "lucide-react";
+import { LogOut, ChevronRight, GraduationCap, Calculator } from "lucide-react";
 import { useAuth } from "@/providers/auth-provider";
 import { useT } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
