@@ -1,26 +1,47 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Navigate } from "@tanstack/react-router";
+import { useAuth } from "@/providers/auth-provider";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
-
 function Index() {
-  return <PlaceholderIndex />;
+  const { user, loading } = useAuth();
+  const t = useT();
+  const [onboarded, setOnboarded] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (!user) {
+      setOnboarded(null);
+      return;
+    }
+    supabase
+      .from("profiles")
+      .select("onboarded")
+      .eq("id", user.id)
+      .maybeSingle()
+      .then(({ data }) => setOnboarded(data?.onboarded ?? false));
+  }, [user]);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="font-display text-3xl font-bold text-ink">Bitfit</div>
+      </div>
+    );
+  }
+
+  if (!user) return <Navigate to="/auth" />;
+  if (onboarded === null) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <span className="text-sm text-muted-foreground">{t("loading")}</span>
+      </div>
+    );
+  }
+  if (!onboarded) return <Navigate to="/onboarding" />;
+  return <Navigate to="/app/dashboard" />;
 }
