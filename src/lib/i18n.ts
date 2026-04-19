@@ -182,6 +182,18 @@ export const translations = {
     overLimit: "ლიმიტი გადააჭარბე",
     deficitHint: "დარჩა {n} კალორია",
     surplusHint: "გადააჭარბე {n} კალორიით",
+    // Privacy
+    requiredField: "სავალდებულო ველი",
+    acceptPolicyPrefix: "ვეთანხმები",
+    privacyPolicy: "კონფიდენციალურობის პოლიტიკას",
+    andTerms: "და მომსახურების პირობებს",
+    mustAcceptPolicy: "გასაგრძელებლად დაეთანხმე პოლიტიკას",
+    privacyTitle: "კონფიდენციალურობის პოლიტიკა",
+    privacyBody:
+      "Bitfit აგროვებს მონაცემებს, რომლებსაც შენ აწოდებ (ელ-ფოსტა, წონა, კერძები, აქტივობა) მხოლოდ შენი პროგრესის საჩვენებლად. მონაცემები ინახება უსაფრთხოდ და არ ვუზიარებთ მესამე მხარეს რეკლამისთვის. შეგიძლია ნებისმიერ დროს წაშალო ანგარიში პარამეტრებიდან.",
+    accept: "ვეთანხმები",
+    decline: "უარი",
+    policyDeclined: "პოლიტიკის გარეშე რეგისტრაცია შეუძლებელია",
   },
   en: {
     appName: "Bitfit",
@@ -353,6 +365,18 @@ export const translations = {
     overLimit: "Over your limit",
     deficitHint: "{n} kcal left",
     surplusHint: "{n} kcal over",
+    // Privacy
+    requiredField: "Required field",
+    acceptPolicyPrefix: "I agree to the",
+    privacyPolicy: "Privacy Policy",
+    andTerms: "and Terms of Service",
+    mustAcceptPolicy: "Please accept the policy to continue",
+    privacyTitle: "Privacy Policy",
+    privacyBody:
+      "Bitfit collects only the data you provide (email, weight, meals, activity) to show your progress. Data is stored securely and never shared with third parties for advertising. You can delete your account anytime from settings.",
+    accept: "Accept",
+    decline: "Decline",
+    policyDeclined: "You must accept the policy to register",
   },
 } as const;
 

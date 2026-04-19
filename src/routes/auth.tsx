@@ -7,6 +7,14 @@ import { useT } from "@/lib/i18n";
 import { LanguageToggle } from "@/components/bitfit/language-toggle";
 import { Logo } from "@/components/bitfit/logo";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/auth")({
   component: AuthPage,
@@ -27,9 +35,15 @@ function AuthPage() {
   const [fullName, setFullName] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [oauthLoading, setOauthLoading] = useState<"google" | "apple" | null>(null);
+  const [acceptedPolicy, setAcceptedPolicy] = useState(false);
+  const [policyOpen, setPolicyOpen] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (mode === "signup" && !acceptedPolicy) {
+      toast.error(t("mustAcceptPolicy"));
+      return;
+    }
     setSubmitting(true);
     try {
       const parsed = schema.parse({
@@ -115,33 +129,63 @@ function AuthPage() {
           {mode === "signup" && (
             <input
               type="text"
-              placeholder={t("fullName")}
+              placeholder={`${t("fullName")} *`}
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="w-full rounded-[10px] border border-border bg-card px-5 py-4 text-base outline-none transition-colors focus:border-primary"
+              className="w-full rounded-[10px] border border-border bg-card px-5 py-4 text-base outline-none transition-colors focus:border-primary invalid:border-destructive/40"
               required
               maxLength={100}
+              aria-required="true"
             />
           )}
           <input
             type="email"
-            placeholder={t("email")}
+            placeholder={`${t("email")} *`}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-[10px] border border-border bg-card px-5 py-4 text-base outline-none transition-colors focus:border-primary"
+            className="w-full rounded-[10px] border border-border bg-card px-5 py-4 text-base outline-none transition-colors focus:border-primary invalid:border-destructive/40"
             required
             maxLength={255}
+            aria-required="true"
           />
           <input
             type="password"
-            placeholder={t("password")}
+            placeholder={`${t("password")} *`}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-[10px] border border-border bg-card px-5 py-4 text-base outline-none transition-colors focus:border-primary"
+            className="w-full rounded-[10px] border border-border bg-card px-5 py-4 text-base outline-none transition-colors focus:border-primary invalid:border-destructive/40"
             required
             minLength={6}
             maxLength={72}
+            aria-required="true"
           />
+
+          {mode === "signup" && (
+            <label className="flex cursor-pointer items-start gap-3 rounded-[10px] border border-border bg-card/50 px-4 py-3 text-sm text-ink/80 transition-colors hover:bg-card">
+              <input
+                type="checkbox"
+                checked={acceptedPolicy}
+                onChange={(e) => setAcceptedPolicy(e.target.checked)}
+                className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer accent-primary"
+                required
+                aria-required="true"
+              />
+              <span className="leading-snug">
+                {t("acceptPolicyPrefix")}{" "}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setPolicyOpen(true);
+                  }}
+                  className="font-medium text-ink underline underline-offset-2 hover:text-primary"
+                >
+                  {t("privacyPolicy")}
+                </button>{" "}
+                {t("andTerms")}
+              </span>
+            </label>
+          )}
 
           {mode === "signin" && (
             <div className="flex justify-end">
@@ -156,7 +200,7 @@ function AuthPage() {
 
           <button
             type="submit"
-            disabled={submitting}
+            disabled={submitting || (mode === "signup" && !acceptedPolicy)}
             className="btn-cta mt-4 w-full rounded-[10px] bg-primary py-4 text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
           >
             {submitting ? t("loading") : mode === "signup" ? t("signUp") : t("signIn")}
@@ -205,6 +249,40 @@ function AuthPage() {
           </span>
         </button>
       </div>
+
+      <Dialog open={policyOpen} onOpenChange={setPolicyOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>{t("privacyTitle")}</DialogTitle>
+            <DialogDescription className="pt-2 text-sm leading-relaxed text-ink/70">
+              {t("privacyBody")}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="mt-4 flex-row justify-end gap-2 sm:gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                setAcceptedPolicy(false);
+                setPolicyOpen(false);
+                toast.error(t("policyDeclined"));
+              }}
+              className="rounded-[10px] border border-border bg-card px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-secondary"
+            >
+              {t("decline")}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setAcceptedPolicy(true);
+                setPolicyOpen(false);
+              }}
+              className="rounded-[10px] bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+            >
+              {t("accept")}
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
