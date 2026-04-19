@@ -9,7 +9,9 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as CoachRouteImport } from './routes/coach'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AppRouteImport } from './routes/app'
@@ -22,9 +24,19 @@ import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
 import { Route as AppCalculatorRouteImport } from './routes/app.calculator'
 import { Route as CoachClientsIdRouteImport } from './routes/coach.clients.$id'
 
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CoachRoute = CoachRouteImport.update({
@@ -88,7 +100,9 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/coach': typeof CoachRouteWithChildren
+  '/forgot-password': typeof ForgotPasswordRoute
   '/onboarding': typeof OnboardingRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/app/calculator': typeof AppCalculatorRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/progress': typeof AppProgressRoute
@@ -102,7 +116,9 @@ export interface FileRoutesByTo {
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/coach': typeof CoachRouteWithChildren
+  '/forgot-password': typeof ForgotPasswordRoute
   '/onboarding': typeof OnboardingRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/app/calculator': typeof AppCalculatorRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/progress': typeof AppProgressRoute
@@ -117,7 +133,9 @@ export interface FileRoutesById {
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/coach': typeof CoachRouteWithChildren
+  '/forgot-password': typeof ForgotPasswordRoute
   '/onboarding': typeof OnboardingRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/app/calculator': typeof AppCalculatorRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/progress': typeof AppProgressRoute
@@ -133,7 +151,9 @@ export interface FileRouteTypes {
     | '/app'
     | '/auth'
     | '/coach'
+    | '/forgot-password'
     | '/onboarding'
+    | '/reset-password'
     | '/app/calculator'
     | '/app/dashboard'
     | '/app/progress'
@@ -147,7 +167,9 @@ export interface FileRouteTypes {
     | '/app'
     | '/auth'
     | '/coach'
+    | '/forgot-password'
     | '/onboarding'
+    | '/reset-password'
     | '/app/calculator'
     | '/app/dashboard'
     | '/app/progress'
@@ -161,7 +183,9 @@ export interface FileRouteTypes {
     | '/app'
     | '/auth'
     | '/coach'
+    | '/forgot-password'
     | '/onboarding'
+    | '/reset-password'
     | '/app/calculator'
     | '/app/dashboard'
     | '/app/progress'
@@ -176,16 +200,32 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
   CoachRoute: typeof CoachRouteWithChildren
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
   OnboardingRoute: typeof OnboardingRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/onboarding': {
       id: '/onboarding'
       path: '/onboarding'
       fullPath: '/onboarding'
       preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/coach': {
@@ -313,7 +353,9 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
   CoachRoute: CoachRouteWithChildren,
+  ForgotPasswordRoute: ForgotPasswordRoute,
   OnboardingRoute: OnboardingRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
