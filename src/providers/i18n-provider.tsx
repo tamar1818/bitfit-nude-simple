@@ -11,13 +11,20 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("ka");
 
   useEffect(() => {
-    setLangState(getStoredLang());
+    const stored = getStoredLang();
+    setLangState(stored);
+    if (typeof document !== "undefined") {
+      document.documentElement.lang = stored;
+    }
   }, []);
 
   const setLang = useCallback((next: Lang) => {
     setLangState(next);
     if (typeof window !== "undefined") {
       window.localStorage.setItem("bitfit.lang", next);
+    }
+    if (typeof document !== "undefined") {
+      document.documentElement.lang = next;
     }
   }, []);
 

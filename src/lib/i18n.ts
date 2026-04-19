@@ -118,6 +118,10 @@ export const translations = {
     calculate: "გამოთვლა",
     applyGoal: "გამოყენება როგორც მიზანი",
     goalApplied: "კალორიების მიზანი განახლდა",
+    yourCalorieGoal: "შენი კალორიების მიზანი",
+    calculating: "ვითვლით...",
+    stepOf: "ნაბიჯი",
+    noMealsToday: "დღეს კერძი ჯერ არ დაგიმატებია",
   },
   en: {
     appName: "Bitfit",
@@ -225,6 +229,10 @@ export const translations = {
     calculate: "Calculate",
     applyGoal: "Apply as daily goal",
     goalApplied: "Calorie goal updated",
+    yourCalorieGoal: "Your calorie goal",
+    calculating: "Calculating...",
+    stepOf: "Step",
+    noMealsToday: "No meals logged yet today",
   },
 } as const;
 

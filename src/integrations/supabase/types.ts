@@ -174,6 +174,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          activity_level: Database["public"]["Enums"]["activity_level"] | null
           age: number | null
           avatar_url: string | null
           coach_id: string | null
@@ -189,6 +190,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          activity_level?: Database["public"]["Enums"]["activity_level"] | null
           age?: number | null
           avatar_url?: string | null
           coach_id?: string | null
@@ -204,6 +206,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          activity_level?: Database["public"]["Enums"]["activity_level"] | null
           age?: number | null
           avatar_url?: string | null
           coach_id?: string | null
@@ -283,6 +286,7 @@ export type Database = {
       redeem_coach_invite: { Args: { _code: string }; Returns: string }
     }
     Enums: {
+      activity_level: "sedentary" | "light" | "moderate" | "active" | "extra"
       app_role: "user" | "coach" | "admin"
       meal_type: "breakfast" | "lunch" | "dinner" | "snack"
       user_gender: "male" | "female" | "other"
@@ -415,6 +419,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      activity_level: ["sedentary", "light", "moderate", "active", "extra"],
       app_role: ["user", "coach", "admin"],
       meal_type: ["breakfast", "lunch", "dinner", "snack"],
       user_gender: ["male", "female", "other"],
