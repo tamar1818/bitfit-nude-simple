@@ -74,7 +74,7 @@ function WelcomePage() {
           {/* Primary CTA */}
           <Link
             to="/auth"
-            search={{ mode: "signup" }}
+            search={{ mode: "signup" } as never}
             className="btn-cta mt-6 flex w-full items-center justify-center gap-2 rounded-[14px] bg-primary py-4 text-primary-foreground shadow-float transition-transform hover:scale-[1.02] active:scale-[0.98]"
           >
             {t("getStarted")}
@@ -84,7 +84,7 @@ function WelcomePage() {
           {/* Secondary — sign in link */}
           <Link
             to="/auth"
-            search={{ mode: "signin" }}
+            search={{ mode: "signin" } as never}
             className="mt-3 block text-center text-sm text-muted-foreground hover:text-ink"
           >
             {t("haveAccount")}{" "}
