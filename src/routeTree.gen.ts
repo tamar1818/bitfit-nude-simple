@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
@@ -26,6 +27,11 @@ import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
 import { Route as GroupsJoinSlugRouteImport } from './routes/groups.join.$slug'
 import { Route as CoachClientsIdRouteImport } from './routes/coach.clients.$id'
 
+const WelcomeRoute = WelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
@@ -116,6 +122,7 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof OnboardingRoute
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/welcome': typeof WelcomeRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/groups': typeof AppGroupsRoute
   '/app/progress': typeof AppProgressRoute
@@ -134,6 +141,7 @@ export interface FileRoutesByTo {
   '/onboarding': typeof OnboardingRoute
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/welcome': typeof WelcomeRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/groups': typeof AppGroupsRoute
   '/app/progress': typeof AppProgressRoute
@@ -153,6 +161,7 @@ export interface FileRoutesById {
   '/onboarding': typeof OnboardingRoute
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/welcome': typeof WelcomeRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/groups': typeof AppGroupsRoute
   '/app/progress': typeof AppProgressRoute
@@ -173,6 +182,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/privacy'
     | '/reset-password'
+    | '/welcome'
     | '/app/dashboard'
     | '/app/groups'
     | '/app/progress'
@@ -191,6 +201,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/privacy'
     | '/reset-password'
+    | '/welcome'
     | '/app/dashboard'
     | '/app/groups'
     | '/app/progress'
@@ -209,6 +220,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/privacy'
     | '/reset-password'
+    | '/welcome'
     | '/app/dashboard'
     | '/app/groups'
     | '/app/progress'
@@ -228,11 +240,19 @@ export interface RootRouteChildren {
   OnboardingRoute: typeof OnboardingRoute
   PrivacyRoute: typeof PrivacyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  WelcomeRoute: typeof WelcomeRoute
   GroupsJoinSlugRoute: typeof GroupsJoinSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/welcome': {
+      id: '/welcome'
+      path: '/welcome'
+      fullPath: '/welcome'
+      preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reset-password': {
       id: '/reset-password'
       path: '/reset-password'
@@ -397,6 +417,7 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingRoute: OnboardingRoute,
   PrivacyRoute: PrivacyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  WelcomeRoute: WelcomeRoute,
   GroupsJoinSlugRoute: GroupsJoinSlugRoute,
 }
 export const routeTree = rootRouteImport
