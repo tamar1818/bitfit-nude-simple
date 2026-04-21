@@ -34,7 +34,7 @@ function Index() {
     );
   }
 
-  if (!user) return <Navigate to="/auth" />;
+  if (!user) return <Navigate to="/welcome" />;
   if (onboarded === null) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
